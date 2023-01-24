@@ -9,20 +9,20 @@ Dictionary::Dictionary()
 
 Dictionary::~Dictionary()
 {
-    for (int i = 0; i < MAX_SIZE; i++) {
-        Node* node = items[i];
-        if (node) {
-            while (node->next != NULL) {
-                Node* temp = node->next;
-                node->next = NULL;
-                node = node->next;
-                delete temp;
-            }
-        }
-        items[i] = NULL;
-        delete node;
-    }
-    size = 0;
+    //for (int i = 0; i < MAX_SIZE; i++) {
+    //    Node* node = items[i];
+    //    if (node) {
+    //        while (node->next != NULL) {
+    //            Node* temp = node->next;
+    //            node->next = NULL;
+    //            node = node->next;
+    //            delete temp;
+    //        }
+    //    }
+    //    items[i] = NULL;
+    //    delete node;
+    //}
+    //size = 0;
 }
 
 int charvalue(char c)
@@ -136,6 +136,21 @@ bool Dictionary::returnLogin(KeyType key, ItemType item)
         Node* current = items[index];
         while (current != NULL) {
             if (current->key == key && current->item == item) {
+                return true;
+            }
+            current = current->next;
+        }
+    }
+    return false;
+}
+
+bool Dictionary::validateLogin(KeyType key)
+{
+    int index = hash(key);
+    if (items[index] != NULL) {
+        Node* current = items[index];
+        while (current != NULL) {
+            if (current->key == key) {
                 return true;
             }
             current = current->next;

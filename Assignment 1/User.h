@@ -2,6 +2,7 @@
 
 #include<string>
 #include<iostream>
+#include"Dictionary.h"
 using namespace std;
 
 class User
@@ -10,8 +11,6 @@ class User
 private:
 	string name;
 	string password;
-	int userId;
-	static int unique_id;
 
 public:
 	User();
@@ -19,6 +18,7 @@ public:
 	void setName(string n);
 	string getName();
 	void setPassword(string pw);
-	int getId();
+	void saveToTextFile();
+	string getPassword();
 };
 

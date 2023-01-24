@@ -53,6 +53,8 @@ public:
 
 	bool returnLogin(KeyType key, ItemType item);
 
+	bool validateLogin(KeyType key);
+
 	// check if the Dictionary is empty
 	// pre : none
 	// post: none

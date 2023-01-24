@@ -1,9 +1,8 @@
 #include "User.h"
-int User::unique_id = 0;
+#include"Dictionary.h"
+#include<fstream>
 
-User::User() {
-	userId = unique_id++;
-}
+User::User() {}
 
 User::User(string n, string pw)
 {
@@ -17,5 +16,31 @@ string User::getName(){return name;}
 
 void User::setPassword(string pw){password = pw;}
 
-int User::getId() { return userId; }
+string User::getPassword() { return password; }
+
+void User::saveToTextFile()
+{
+    // Input stream class to
+    // operate on files.
+    ifstream ifile("users.txt", ios::in);
+
+    // Output stream class to
+    // operate on files.
+    ofstream file("users.txt", ios::out | ios::app);
+
+    // check if file exists
+    if (!ifile.is_open()) {
+
+        // file not found (i.e, not opened).
+        // Print an error message.
+        cout << "file not found";
+    }
+    else {
+        // then add more lines to
+        // the file if need be
+        file << name << "," << password << "," << "post" << endl;
+        file.close();
+    }
+
+}
 

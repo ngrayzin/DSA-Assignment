@@ -1,10 +1,13 @@
 #include<string>
 #include<iostream>
+#include <sstream>
+#include<fstream>
+#include <vector>
 #include "Dictionary.h"
 #include "User.h"
 using namespace std;
 
-void loadInfo();
+Dictionary loadInfo();
 void displayMenu();
 void login();
 void userLogin();
@@ -12,10 +15,13 @@ void userSignUp();
 
 Dictionary userData;
 static bool loggedIn = false;
+User currentUser;
+
 
 int main()
 {
-    loadInfo();
+    
+    userData = loadInfo();
     int option = 1;
     while (option != 0)
     {
@@ -67,25 +73,33 @@ int main()
 
 }
 
-void loadInfo() {
+Dictionary loadInfo() {
     //read textfile then for loop make user add into dictionary
-    //userData.add(userId, User class)
-    User u1;
-    u1.setName("billy");
-    u1.setPassword("123456");
-    User u2;
-    u2.setName("niasd");
-    u2.setPassword("123456");
-    User u3;
-    u3.setName("asdaaa");
-    u3.setPassword("123456");
-    User u4 = User("etst", "123234");
+    Dictionary d;
+    ifstream file("users.txt");
+    string line;
 
-    userData.add("billy", "123456");
-    userData.add("niasd", "123456");
-    userData.add("asdaaa", "123456");
-    userData.add("etst", "123456");
-    userData.print();
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string name, password, post;
+        getline(ss, name, ',');
+        getline(ss, password, ',');
+        vector<string> posts;
+        while (getline(ss, post, ',')) posts.push_back(post);
+        d.add(name, password);
+        cout << "posts: ";
+        for (const auto& post : posts) {
+            //here is where you populate the posts dictionary
+            //im thinking have two itemtype (if possible) e.g. Key: Topic Itemtype1: name Itemtype 2: post
+            //the replies i planning to store it in diff txt file so maybe each post have a txt file for itself
+            cout << post << " ";
+        } 
+        cout << "\n";
+    }
+    file.close();
+
+    d.print();
+    return d;
 }
 
 void login()
@@ -124,6 +138,7 @@ void userLogin() {
     cin >> password;
     if (userData.returnLogin(username, password)) {
         loggedIn = true;
+        currentUser = User(username, password);
         cout << "Successful" << endl;
     }
     else {
@@ -136,11 +151,17 @@ void userSignUp() {
     string password;
     cout << "Enter username: ";
     cin >> username;
+    while (userData.validateLogin(username)){
+        cout << "Username is taken, please enter another name: ";
+        cin >> username;
+    }
     cout << "Enter password: ";
     cin >> password;
     if (userData.add(username, password)) {
         loggedIn = true;
+        currentUser = User(username, password);
         //write to txt file
+        currentUser.saveToTextFile();
         cout << "Successful" << endl;
     }
     else {
