@@ -5,23 +5,33 @@
 #include <vector>
 #include "Dictionary.h"
 #include "User.h"
+#include "List.h"
 using namespace std;
 
-Dictionary loadInfo();
+Dictionary<string> loadInfo();
 void displayMenu();
 void login();
 void userLogin();
 void userSignUp();
 
-Dictionary userData;
+Dictionary<string> userData;
 static bool loggedIn = false;
 User currentUser;
 
 
 int main()
 {
-    
+    List list = List();
+    list.add("user", "title", "content");
+    list.add("user2", "bye", "bye");
+    Dictionary<List> topicList = Dictionary<List>();
+
+    topicList.add("topic", list);
+
+    topicList.print();
+
     userData = loadInfo();
+    
     int option = 1;
     while (option != 0)
     {
@@ -43,6 +53,7 @@ int main()
         }
         else {
             //show main page
+            cout << currentUser.getName() << endl;
             displayMenu();
             cin >> option;
             if (option == 1) {
@@ -60,8 +71,12 @@ int main()
             else if (option == 5) {
                 cout << "option5" << endl;
             }
+            else if (option == 6) {
+                loggedIn = false;
+                cout << "Logged out" << endl;
+            }
             else if (option == 0) {
-                cout << "BYEBYE" << endl;
+                cout << "BYE BYE" << endl;
             }
             else
                 cout << "Invalid option! Please try again." << endl;
@@ -73,9 +88,9 @@ int main()
 
 }
 
-Dictionary loadInfo() {
+Dictionary<string> loadInfo() {
     //read textfile then for loop make user add into dictionary
-    Dictionary d;
+    Dictionary<string> d;
     ifstream file("users.txt");
     string line;
 
@@ -124,6 +139,7 @@ void displayMenu()
     cout << "[3] Create Post      " << endl;
     cout << "[4] Browse           " << endl;
     cout << "[5] Edit/Delete Post " << endl;
+    cout << "[6] Logout           " << endl;
     cout << "[0] Exit             " << endl;
     cout << "---------------------" << endl;
     cout << "Enter your option: ";
