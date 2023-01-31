@@ -11,26 +11,33 @@ using namespace std;
 Dictionary<string> loadInfo();
 void displayMenu();
 void login();
-void userLogin();
-void userSignUp();
+void userLogin(Dictionary<string> userData);
+void userSignUp(Dictionary<string> userData);
 
-Dictionary<string> userData;
 static bool loggedIn = false;
 User currentUser;
 
 
 int main()
 {
-    List list = List();
-    list.add("user", "title", "content");
-    list.add("user2", "bye", "bye");
-    Dictionary<List> topicList = Dictionary<List>();
+    List<string> list = List<string>(); // this type should be the post class e.g. List<Post> 
+    //list.add("user", "title", "content"); //add the post in the list
+    //list.add("user2", "bye", "bye");
+    list.add("user2bye");
+    Dictionary<List<string>> topicList = Dictionary<List<string>>(); // dictionary for topic : postList
 
-    topicList.add("topic", list);
+    topicList.add("topic", list); // add the topic and post into the dic
 
-    topicList.print();
+    List<string> newList = topicList.get("topic");
 
-    userData = loadInfo();
+    cout << list.getLength() << endl;
+
+    cout << newList.getLength() << endl;
+
+
+    //newList.print();
+    Dictionary<string> userData = loadInfo();
+    cout << userData.getLength() << endl;
     
     int option = 1;
     while (option != 0)
@@ -40,10 +47,10 @@ int main()
             login();
             cin >> option;
             if (option == 1) {
-                userLogin();
+                userLogin(userData);
             }
             else if (option == 2) {
-                userSignUp();
+                userSignUp(userData);
             }
             else if (option == 0) {
                 cout << "BYEBYE" << endl;
@@ -83,9 +90,6 @@ int main()
 
         }
     }
-    
-    return 0;
-
 }
 
 Dictionary<string> loadInfo() {
@@ -112,8 +116,6 @@ Dictionary<string> loadInfo() {
         cout << "\n";
     }
     file.close();
-
-    d.print();
     return d;
 }
 
@@ -145,14 +147,14 @@ void displayMenu()
     cout << "Enter your option: ";
 }
 
-void userLogin() {
+void userLogin(Dictionary<string> userData) {
     string username;
     string password;
     cout << "Enter username: ";
     cin >> username;
     cout << "Enter password: ";
     cin >> password;
-    if (userData.returnLogin(username, password)) {
+    if (userData.check(username, password)) {
         loggedIn = true;
         currentUser = User(username, password);
         cout << "Successful" << endl;
@@ -162,12 +164,12 @@ void userLogin() {
     }
 }
 
-void userSignUp() {
+void userSignUp(Dictionary<string> userData) {
     string username;
     string password;
     cout << "Enter username: ";
     cin >> username;
-    while (userData.validateLogin(username)){
+    while (userData.check(username)){
         cout << "Username is taken, please enter another name: ";
         cin >> username;
     }

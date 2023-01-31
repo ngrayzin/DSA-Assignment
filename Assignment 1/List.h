@@ -3,17 +3,13 @@
 #include<iostream>
 using namespace std;
 
-typedef string ItemType;
-
+template <typename ItemType>
 class List
 {
 private:
 	struct Node
 	{
-		string username; // data item
-		string postTitle; // data item
-		string postContent; // data item
-		//stack replies; //reply stack
+		ItemType item;
 		Node* next;	// pointer pointing to next item
 	};
 
@@ -29,14 +25,14 @@ public:
 	// pre : size < MAX_SIZE
 	// post: item is added to the back of the list
 	//       size of list is increased by 1
-	bool add(string username, string postTitle, string postContent);
+	bool add(ItemType item);
 
 	// add an item at a specified position in the list (insert)
 	// pre : 0 <= index <= size
 	// post: item is added to the specified position in the list
 	//       items after the position are shifted back by 1 position
 	//       size of list is increased by 1
-	//bool add(int index, ItemType item); // this will prob be add the stack into the node
+	bool add(int index, ItemType item); // this will prob be add the stack into the node
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -49,7 +45,7 @@ public:
 	// pre : 0 <= index < size
 	// post: none
 	// return the item in the specified index of the list
-	List getAllPostbyUser(string username);
+	ItemType get(int index);
 
 	// check if the list is empty
 	// pre : none
@@ -71,4 +67,141 @@ public:
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
 };
+
+template <typename ItemType>
+List<ItemType>::List() {
+	size = 0;
+	firstNode = NULL;
+}
+
+template <typename ItemType>
+List<ItemType>::~List() {
+	//Node* temp = firstNode;
+	//while (temp != NULL)
+	//{
+	//	firstNode = firstNode->next;
+	//	temp->next = NULL;
+	//	delete temp;
+	//	temp = firstNode;
+	//}
+	//size = 0;
+}
+
+template <typename ItemType>
+bool List<ItemType>::add(ItemType item)
+{
+	Node* newNode = new Node;
+	newNode->item = item;
+	newNode->next = NULL;
+	if (size == 0) {
+		firstNode = newNode;
+	}
+	else {
+		Node* current = firstNode;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = newNode;
+	}
+	size++;
+	return true;
+}
+
+template <typename ItemType>
+bool List<ItemType>::add(int index, ItemType item)
+{
+	if (index < size && index >= 0) {
+		//create the node
+		Node* newNode = new Node;
+		//store the note
+		newNode->item = item;
+		//initialize the next pointer to null
+		newNode->next = NULL;
+		//if list is empty
+		if (index == 0) {
+			newNode->next = firstNode;
+			//set first node (pointer) to point ot new node
+			firstNode = newNode;
+		}
+		else {
+			//traverse to last node
+			Node* current = firstNode;
+			for (int i = 0; i < index - 1;i++) {
+				current = current->next;
+			}
+			//set last node to point to indexed node
+			newNode->next = current->next;
+			//set that node to point to the new node
+			current->next = newNode;
+		}
+		size++;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+template <typename ItemType>
+void List<ItemType>::remove(int index)
+{
+	//if node is valid
+	if (index < size && index >= 0) {
+		//if node to be remove is fist node
+		if (index == 0) {
+			//set first node to point to the second node(or NULL)
+			firstNode = firstNode->next;
+		}
+		else {
+			Node* current = firstNode;
+			for (int i = 0;i < index - 1;i++) {
+				current = current->next;
+			}
+			current->next = current->next->next;
+		}
+		size--;
+	}
+}
+
+template <typename ItemType>
+ItemType List<ItemType>::get(int index)
+{
+	// If index is valid
+	if (index < size && index >= 0) {
+		// Traverse the list to the index
+		Node* current = firstNode;
+		for (int i = 0; i <= (index - 1); i++)
+			current = current->next;
+
+		// Return the item contained in the node
+		return current->item;
+	}
+
+	return ItemType();
+}
+
+template <typename ItemType>
+bool List<ItemType>::isEmpty()
+{
+	return size == 0;
+}
+
+
+template <typename ItemType>
+int List<ItemType>::getLength()
+{
+	return size;
+}
+
+template <typename ItemType>
+void List<ItemType>::print()
+{
+	Node* current;
+	current = firstNode;
+
+	while (current != NULL) {
+		cout << current->item << "." << endl;
+		current = current->next;
+	}
+}
 

@@ -17,7 +17,7 @@ private:
 	{
 		KeyType	 key;   // search key
 		ItemType item;	// data item
-		Node* next;	// pointer pointing to next item with same search key
+        Node* next;	// pointer pointing to next item with same search key
 	};
 
 	Node* items[MAX_SIZE];
@@ -54,9 +54,9 @@ public:
 	// return the item with the specified key from the Dictionary
 	ItemType get(KeyType key);
 
-	bool returnLogin(KeyType key, ItemType item);
+	bool check(KeyType key, ItemType item);
 
-	bool validateLogin(KeyType key);
+	bool check(KeyType key);
 
 	// check if the Dictionary is empty
 	// pre : none
@@ -73,9 +73,7 @@ public:
 	//------------------- Other useful functions -----------------
 
 	// display the items in the Dictionary
-	void print();
-
-	void print1();
+	//void print();
 
 	// void replace(KeyType key, ItemType item);
 	// bool contains(KeyType key);
@@ -85,13 +83,30 @@ public:
 template <typename ItemType>
 Dictionary<ItemType>::Dictionary() {
     size = 0;
-    for (int i = 0; i < MAX_SIZE; i++) {
-        items[i] = NULL;
+
+    for (int i = 0; i < MAX_SIZE; i++)
+    {
+        items[i] = nullptr;
     }
 }
 
 template <typename ItemType>
-Dictionary<ItemType>::~Dictionary() {}
+Dictionary<ItemType>::~Dictionary() {
+    //for (int i = 0; i < MAX_SIZE; i++)
+    //{
+    //    if (items[i] == nullptr)
+    //    {
+    //        continue;
+    //    }
+
+    //    while (items[i] != nullptr)
+    //    {
+    //        Node* tmpNodePtr = items[i];
+    //        items[i] = items[i]->next;
+    //        delete tmpNodePtr;
+    //    }
+    //}
+}
 
 template <typename ItemType>
 int Dictionary<ItemType>::charvalue(char c)
@@ -110,60 +125,70 @@ int Dictionary<ItemType>::charvalue(char c)
 template <typename ItemType>
 int Dictionary<ItemType>::hash(KeyType key)
 {
-    //int total = charvalue(key[0]);
-    //for (int i = 1; i < key.length(); i++)
-    //{
-    //    if (charvalue(key[i]) < 0)  // not an alphabet
-    //        continue;
-    //    total = total * 52 + charvalue(key[i]);
-    //    total %= MAX_SIZE;
-    //}
-    //return total;
-    unsigned long hash = 5381;
-    int c;
-
-    int range = key.length() - 1;
-    int num = rand() % range;
-    char* abs = &key[num];
-
-    while (c = *abs++) {
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    if (key.size() < 1) {
+        return -1;
     }
 
-    return hash % MAX_SIZE;
+    unsigned long int value = 0;
+    for (int i = 0; key[i] != '\0'; i++)
+    {
+        value += charvalue(key[i]) * pow(26, i);
+    }
+
+    return value % MAX_SIZE;
 }
 
 template <typename ItemType>
 bool Dictionary<ItemType>::add(KeyType newKey, ItemType newItem)
 {
-    int index = hash(newKey);
-    if (items[index] == NULL) {
-        Node* newNode = new Node;
-        newNode->item = newItem;
-        newNode->key = newKey;
-        newNode->next = NULL;
-        items[index] = newNode;
+    // Compute the index using hash function
+    int hashValue = hash(newKey);
+
+    //Get the node from the items 
+    Node* node = items[hashValue];
+
+    //Create a new node
+    Node* newNode = new Node;
+
+    //Set Items and keys into the newNode
+    newNode->item = newItem;
+    newNode->key = newKey;
+    newNode->next = NULL;
+
+
+    // Check if thee if item in the node is empty
+    if (!node) {
+        //Set list at index to point to new node 
+        items[hashValue] = newNode;
+
     }
     else {
-        Node* current = items[index];
-        if (current->key == newKey) {
-            cout << newKey << " already exists" << endl;
+        //Check if the first node key is the smae 
+        if (node->key == newNode->key) {
             return false;
         }
-        while (current->next != NULL) {
-            current = current->next;
-            if (current->key == newKey) {
-                cout << newKey << " already exists" << endl;
-                return false;
+        else {
+
+            //Trasverse throught the linked list
+            while (node->next) {
+                //Assign it to the next node to node 
+                node = node->next;
+                //Check if the node has the same key 
+                if (node->key == newNode->key) {
+                    return false;
+                }
             }
         }
-        Node* newNode = new Node;
-        newNode->item = newItem;
-        newNode->key = newKey;
-        newNode->next = NULL;
-        current->next = newNode;
+
+
+        //Set the next to the new node 
+        node->next = newNode;
     }
+
+    // Increase the size by 1
     size++;
+
+    // Return true  
     return true;
 }
 
@@ -171,30 +196,28 @@ template <typename ItemType>
 void Dictionary<ItemType>::remove(KeyType key)
 {
     int index = hash(key);
-    if (items[index] != NULL) {
-        Node* current = items[index];
-        if (current->key == key) {
-            Node* next = current->next;
-            current->next = NULL;
-            Node* temp = current;
-            current = next;
-            items[index] = current;
-            delete temp;
-        }
-        else {
-            while (current->next != NULL) {
-                current = current->next;
-                if (current->key == key) {
-                    Node* temp = current->next;
-                    current->next = NULL;
-                    current = NULL;
-                    current = temp;
 
-                }
-            }
-        }
-        size--;
+    Node* item = items[index];
+
+    if (item->next == nullptr)
+    {
+        items[index] = nullptr;
+        delete item;
+        return;
     }
+
+    while (item->next->key.compare(key) != 0 && item != nullptr)
+    {
+        item = item->next;
+    }
+
+    Node* tmpNodePtr = item->next;
+
+    item->next = tmpNodePtr->next;
+
+    delete tmpNodePtr;
+
+    size--;
 }
 
 template <typename ItemType>
@@ -214,7 +237,7 @@ ItemType Dictionary<ItemType>::get(KeyType key)
 }
 
 template <typename ItemType>
-bool Dictionary<ItemType>::returnLogin(KeyType key, ItemType item)
+bool Dictionary<ItemType>::check(KeyType key, ItemType item)
 {
     int index = hash(key);
     if (items[index] != NULL) {
@@ -230,7 +253,7 @@ bool Dictionary<ItemType>::returnLogin(KeyType key, ItemType item)
 }
 
 template <typename ItemType>
-bool Dictionary<ItemType>::validateLogin(KeyType key)
+bool Dictionary<ItemType>::check(KeyType key)
 {
     int index = hash(key);
     if (items[index] != NULL) {
@@ -257,40 +280,24 @@ int Dictionary<ItemType>::getLength()
     return size;
 }
 
-template <typename ItemType>
-void Dictionary<ItemType>::print()
-{
-    for (int i = 0; i < MAX_SIZE; i++) {
-        Node* node = items[i];
-        if (node) {
-            //if (typeid(node->item).name() == "class List") {
-                cout << node->key << " :" << endl;
-                //node->next->item.print();
-                while (node->next != NULL) {
-                    cout << node->next->key << " :" << node->next->item << endl;
-                    
-                    node = node->next;
-                }
-            //}
+//template <typename ItemType>
+//void Dictionary<ItemType>::print()
+//{
+//    for (int i = 0; i < MAX_SIZE; i++)
+//    {
+//        if (items[i] == nullptr)
+//        {
+//            continue;
+//        }
+//
+//        Node* current = items[i];
+//        while (current != nullptr)
+//        {
+//            cout << current->key << ", " << current->item.operator << endl;
+//            current = current->next;
+//        }
+//    }
+//    cout << endl;
+//}
 
-        }
-    }
-}
-
-
-template <typename ItemType>
-void Dictionary<ItemType>::print1()
-{
-    for (int i = 0; i < MAX_SIZE; i++) {
-        Node* current = new Node;
-        current = items[i];
-        if (current != NULL) {
-            cout << current->key << endl;
-            current->item.print();
-            while (current->next != NULL) {
-                current = current->next;
-            }
-        }
-    }
-}
 
