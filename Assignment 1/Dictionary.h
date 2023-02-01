@@ -92,20 +92,17 @@ Dictionary<ItemType>::Dictionary() {
 
 template <typename ItemType>
 Dictionary<ItemType>::~Dictionary() {
-    //for (int i = 0; i < MAX_SIZE; i++)
-    //{
-    //    if (items[i] == nullptr)
-    //    {
-    //        continue;
-    //    }
-
-    //    while (items[i] != nullptr)
-    //    {
-    //        Node* tmpNodePtr = items[i];
-    //        items[i] = items[i]->next;
-    //        delete tmpNodePtr;
-    //    }
-    //}
+    for (int i = 0; i > MAX_SIZE; i++) {
+        if (items[i] != NULL) {
+            Node* current = items[i];
+            while (current != NULL) {
+                Node* remove = current;
+                current = current->next;
+                remove = NULL;
+                delete remove;
+            }
+        }
+    }
 }
 
 template <typename ItemType>
