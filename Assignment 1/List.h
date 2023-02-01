@@ -90,24 +90,19 @@ List<ItemType>::~List() {
 template <typename ItemType>
 bool List<ItemType>::add(ItemType item)
 {
-	cout << "HELLO WTF" << endl;
 	Node* newNode = new Node;
 	newNode->item = item;
 	newNode->next = NULL;
 	if (size == 0) {
-		cout << "HELLO WTFF" << endl;
 		firstNode = newNode;
 	}
 	else {
-		cout << "HELLO WTFFF" << endl;
 		Node* current = firstNode;
 		while (current->next != NULL) {
 			current = current->next;
 		}
-		cout << "HELLO WTFFFFF" << endl;
 		current->next = newNode;
 	}
-	cout << "HELLO" << endl;
 	size++;
 	return true;
 }
@@ -195,18 +190,7 @@ bool List<ItemType>::isEmpty()
 template <typename ItemType>
 int List<ItemType>::getLength()
 {
-	if (firstNode == NULL) {
-		cout << "IT IS FUCKING BROKEN" << endl;
-	}
-	Node* nNode = firstNode;
-	int count = 0;
-	while (nNode->next != NULL)
-	{
-		count += 1;
-		nNode = nNode->next;
-	}
-	return count;
-	//return size;
+	return size;
 }
 
 template <typename ItemType>

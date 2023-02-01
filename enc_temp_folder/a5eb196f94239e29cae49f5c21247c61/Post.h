@@ -8,7 +8,6 @@ private:
 	string title;
 	string description;
 	User user;
-	int likes;
 
 
 public:
