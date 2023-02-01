@@ -5,6 +5,8 @@
 #include <vector>
 #include "Dictionary.h"
 #include "User.h"
+#include "Topic.h"
+#include "Post.h"
 #include "List.h"
 using namespace std;
 
@@ -37,6 +39,7 @@ int main()
 
     //newList.print();
     Dictionary<string> userData = loadInfo();
+    Dictionary<Topic> topicDict;
     cout << userData.getLength() << endl;
     
     int option = 1;
@@ -60,20 +63,55 @@ int main()
         }
         else {
             //show main page
-            cout << currentUser.getName() << endl;
             displayMenu();
             cin >> option;
             if (option == 1) {
                 cout << "option1" << endl;
             }
             else if (option == 2) {
-                cout << "option2" << endl;
+                string titleName;
+                List<Post> postList;
+                cout << "Enter the topic you want to create: ";
+                cin >> titleName;
+                Topic t(titleName, postList);
+                topicDict.add(titleName,t);
+                Topic g = topicDict.get(titleName);
+                cout << g.getTopic() << endl;
+
             }
             else if (option == 3) {
-                cout << "option3" << endl;
+                string postTopic;
+                string title;
+                string desc;
+                //currentUser
+                cout << "Enter the post's title: ";
+                cin >> title;
+                cout << "Enter the post's description: ";
+                cin >> desc;
+                cout << "Enter what topic this post is about: ";
+                cin >> postTopic;
+                if (topicDict.check(postTopic) == true) {
+                    Post p(title, desc, currentUser);
+                    Topic currentTopic = topicDict.get(postTopic);
+                    //List<Post> postList = topicDict.get(postTopic).getPosts();
+                    int addedPost = currentTopic.addPost(p);
+                    cout << addedPost << endl;
+                    //currentTopic.getPosts()
+                    //topicDict.get(postTopic).addPost(p);
+                    //postList.print();
+                }
+                else {
+                    cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
+                }
+                
             }
             else if (option == 4) {
-                cout << "option4" << endl;
+                if (topicDict.getLength() > 0) {
+                    topicDict.printTopic();
+                }
+                else {
+                    cout << "Nothing to print" << endl;
+                }
             }
             else if (option == 5) {
                 cout << "option5" << endl;
@@ -93,6 +131,7 @@ int main()
 }
 
 Dictionary<string> loadInfo() {
+
     //read textfile then for loop make user add into dictionary
     Dictionary<string> d;
     ifstream file("users.txt");
@@ -164,7 +203,8 @@ void userLogin(Dictionary<string> userData) {
     }
 }
 
-void userSignUp(Dictionary<string> userData) {
+void userSignUp(Dictionary<string> userData) 
+{
     string username;
     string password;
     cout << "Enter username: ";

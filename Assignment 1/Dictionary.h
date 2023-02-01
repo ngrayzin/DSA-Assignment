@@ -47,7 +47,6 @@ public:
 	//       size of Dictionary is decreased by 1
 	void remove(KeyType key);
 
-
 	// get an item with the specified key in the Dictionary (retrieve)
 	// pre : key must exist in the dictionary
 	// post: none
@@ -70,6 +69,7 @@ public:
 	// return the number of items in the Dictionary
 	int getLength();
 
+    void printTopic();
 	//------------------- Other useful functions -----------------
 
 	// display the items in the Dictionary
@@ -275,6 +275,18 @@ template <typename ItemType>
 int Dictionary<ItemType>::getLength()
 {
     return size;
+}
+
+template <typename ItemType>
+void Dictionary<ItemType>::printTopic() {
+    int count = 1;
+    cout << "List of available topics:" << endl;
+    for (int i = 0; i < MAX_SIZE; i++) {
+        if (items[i] != NULL) {
+            cout << "[" << count << "] " << items[i]->key << endl;
+            count++;
+        }
+    }
 }
 
 //template <typename ItemType>

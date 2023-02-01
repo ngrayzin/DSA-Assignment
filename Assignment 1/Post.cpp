@@ -3,6 +3,10 @@
 #include <iostream>
 using namespace std;
 
+Post::Post()
+{
+}
+
 Post::Post(string t, string d, User u) {
 	title = t;
 	description = d;
