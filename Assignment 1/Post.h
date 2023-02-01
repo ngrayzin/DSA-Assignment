@@ -5,6 +5,7 @@
 
 class Post {
 private:
+	string topic;
 	string title;
 	string description;
 	User user;
@@ -13,11 +14,13 @@ private:
 
 public:
 	Post();
-	Post(string title, string description, User user);
+	Post(string title, string description, User user, string topic);
 	void setPostTitle(string title);
 	string getPostTitle();
 	void setDescription(string description);
 	string getDescription();
 	void setUser(User user);
 	User getUser();
+	void setTopic(string topic);
+	string getTopic();
 };

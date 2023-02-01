@@ -16,4 +16,5 @@ public:
 	void setPost(List<PostType> postList); //Not Needed
 	List<PostType> getPosts(); //Needed
 	int addPost(PostType post);
+	void saveToTextFile();
 };

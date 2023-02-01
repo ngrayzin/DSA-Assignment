@@ -1,16 +1,18 @@
 #include "Post.h"
 #include <string>
 #include <iostream>
+#include "Topic.h"
 using namespace std;
 
 Post::Post()
 {
 }
 
-Post::Post(string t, string d, User u) {
+Post::Post(string t, string d, User u, string top) {
 	title = t;
 	description = d;
 	user = u;
+	topic = top;
 }
 
 void Post::setPostTitle(string t) {
@@ -35,4 +37,14 @@ void Post::setUser(User u) {
 
 User Post::getUser() {
 	return user;
+}
+
+void Post::setTopic(string t)
+{
+	topic = t;
+}
+
+string Post::getTopic()
+{
+	return topic;
 }

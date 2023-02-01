@@ -2,6 +2,7 @@
 #include<string>
 #include<iostream>
 #include"Dictionary.h"
+
 using namespace std;
 
 class User 

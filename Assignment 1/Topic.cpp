@@ -1,6 +1,8 @@
 #include "Topic.h"
 #include <iostream>
 #include <string>
+#include<fstream>
+
 using namespace std;
 
 Topic::Topic()
@@ -31,4 +33,29 @@ List<PostType> Topic::getPosts() {
 int Topic::addPost(PostType post) {
 	postList.add(post);
 	return postList.getLength();
+}
+
+void Topic::saveToTextFile() 
+{
+    // Input stream class to
+ // operate on files.
+    ifstream ifile("topics.txt", ios::in);
+
+    // Output stream class to
+    // operate on files.
+    ofstream file("topics.txt", ios::out | ios::app);
+
+    // check if file exists
+    if (!ifile.is_open()) {
+
+        // file not found (i.e, not opened).
+        // Print an error message.
+        cout << "file not found";
+    }
+    else {
+        // then add more lines to
+        // the file if need be
+        file << topicName << endl;
+        file.close();
+    }
 }

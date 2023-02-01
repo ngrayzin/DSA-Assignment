@@ -11,6 +11,7 @@
 using namespace std;
 
 Dictionary<string> loadInfo();
+Dictionary<List<Post>> loadTopic();
 void displayMenu();
 void login();
 void userLogin(Dictionary<string> userData);
@@ -22,26 +23,11 @@ User currentUser;
 
 int main()
 {
-    List<string> list = List<string>(); // this type should be the post class e.g. List<Post> 
-    //list.add("user", "title", "content"); //add the post in the list
-    //list.add("user2", "bye", "bye");
-    list.add("user2bye");
-    Dictionary<List<string>> topicList = Dictionary<List<string>>(); // dictionary for topic : postList
-
-    topicList.add("topic", list); // add the topic and post into the dic
-
-    List<string> newList = topicList.get("topic");
-
-    cout << list.getLength() << endl;
-
-    cout << newList.getLength() << endl;
-
-
-    //newList.print();
     Dictionary<string> userData = loadInfo();
-    Dictionary<Topic> topicDict;
+    //Dictionary<Topic> topicDict;
     cout << userData.getLength() << endl;
-    
+    List<Post> postList = List<Post>(); 
+    Dictionary<List<Post>> topicDict = loadTopic();
     int option = 1;
     while (option != 0)
     {
@@ -69,41 +55,34 @@ int main()
                 cout << "option1" << endl;
             }
             else if (option == 2) {
-                string titleName;
+                string topicName;
                 List<Post> postList;
                 cout << "Enter the topic you want to create: ";
-                cin >> titleName;
-                Topic t(titleName, postList);
-                topicDict.add(titleName,t);
-                Topic g = topicDict.get(titleName);
-                cout << g.getTopic() << endl;
-
+                cin >> topicName;
+                Topic t(topicName, postList);
+                topicDict.add(topicName, postList);
+                t.saveToTextFile();
             }
             else if (option == 3) {
                 string postTopic;
                 string title;
                 string desc;
-                //currentUser
-                cout << "Enter the post's title: ";
-                cin >> title;
-                cout << "Enter the post's description: ";
-                cin >> desc;
+                topicDict.printTopic();
                 cout << "Enter what topic this post is about: ";
                 cin >> postTopic;
                 if (topicDict.check(postTopic) == true) {
-                    Post p(title, desc, currentUser);
-                    Topic currentTopic = topicDict.get(postTopic);
-                    //List<Post> postList = topicDict.get(postTopic).getPosts();
-                    int addedPost = currentTopic.addPost(p);
-                    cout << addedPost << endl;
-                    //currentTopic.getPosts()
-                    //topicDict.get(postTopic).addPost(p);
-                    //postList.print();
+                    cout << "Enter the post's title: ";
+                    cin >> title;
+                    cout << "Enter the post's description: ";
+                    cin >> desc;
+                    Post p(title, desc, currentUser, postTopic);
+                    List<Post> list = topicDict.get(postTopic);
+                    list.add(p);
+                    cout << list.getLength() << endl;
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
                 }
-                
             }
             else if (option == 4) {
                 if (topicDict.getLength() > 0) {
@@ -155,6 +134,24 @@ Dictionary<string> loadInfo() {
         cout << "\n";
     }
     file.close();
+    return d;
+}
+
+Dictionary<List<Post>> loadTopic() {
+    Dictionary<List<Post>> d = Dictionary<List<Post>>();
+    List<Post> list = List<Post>();
+    string line;
+    ifstream myfile("topics.txt");
+    if (myfile.is_open()) {
+        while (getline(myfile, line)) {
+            cout << line << endl;
+            d.add(line, list);
+        }
+        myfile.close();
+    }
+    else {
+        cout << "Unable to open file" << endl;
+    }
     return d;
 }
 
