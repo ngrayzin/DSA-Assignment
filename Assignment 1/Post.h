@@ -2,25 +2,30 @@
 #include <string>
 #include <iostream>
 #include "User.h"
+#include <sstream>
+#include<fstream>
 
 class Post {
 private:
 	string topic;
 	string title;
 	string description;
-	User user;
-	int likes;
+	string username;
+	int likes = 0;
 
 
 public:
 	Post();
-	Post(string title, string description, User user, string topic);
+	Post(string title, string description, string username, string topic);
 	void setPostTitle(string title);
 	string getPostTitle();
 	void setDescription(string description);
 	string getDescription();
-	void setUser(User user);
-	User getUser();
+	void setUser(string username);
+	string getUser();
 	void setTopic(string topic);
 	string getTopic();
+	void saveToTextFile();
+	void readTextFileByUser(User user);
+	List<Post> readTextFileByTopic(string topicName);
 };

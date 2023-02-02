@@ -12,6 +12,7 @@ private:
 	string name;
 	string password;
 
+
 public:
 	User();
 	User(string n, string pw);

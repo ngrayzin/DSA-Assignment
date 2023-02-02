@@ -2,7 +2,7 @@
 #include<iostream>
 #include <sstream>
 #include<fstream>
-#include <vector>
+#include <iomanip>
 #include "Dictionary.h"
 #include "User.h"
 #include "Topic.h"
@@ -24,9 +24,6 @@ User currentUser;
 int main()
 {
     Dictionary<string> userData = loadInfo();
-    //Dictionary<Topic> topicDict;
-    cout << userData.getLength() << endl;
-    List<Post> postList = List<Post>(); 
     Dictionary<List<Post>> topicDict = loadTopic();
     int option = 1;
     while (option != 0)
@@ -52,7 +49,8 @@ int main()
             displayMenu();
             cin >> option;
             if (option == 1) {
-                cout << "option1" << endl;
+                Post p;
+                p.readTextFileByUser(currentUser);
             }
             else if (option == 2) {
                 string topicName;
@@ -64,21 +62,21 @@ int main()
                 t.saveToTextFile();
             }
             else if (option == 3) {
-                string postTopic;
-                string title;
-                string desc;
+                string topicName;
+                string title, desc;
                 cout << "List of available topics:" << endl;
                 topicDict.print();
                 cout << "Enter what topic this post is about: ";
-                cin >> postTopic;
-                if (topicDict.check(postTopic)) {
+                cin >> topicName;
+                if (topicDict.contain(topicName)) {
                     cout << "Enter the post's title: ";
                     cin >> title;
                     cout << "Enter the post's description: ";
                     cin >> desc;
-                    Post p = Post(title, desc, currentUser, postTopic);
-                    topicDict.getAddress(postTopic).add(p);
-                    cout << topicDict.get(postTopic).getLength() << endl;
+                    Post p = Post(title, desc, currentUser.getName(), topicName);
+                    topicDict.get(topicName).add(p);
+                    p.saveToTextFile();
+                    cout << topicDict.get(topicName).getLength() << endl;
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
@@ -87,6 +85,32 @@ int main()
             else if (option == 4) {
                 cout << "List of available topics:" << endl;
                 topicDict.print();
+                string topicName;
+                cout << "Which topic would you like to browse: ";
+                cin >> topicName;
+                if (topicDict.contain(topicName)) {
+                    List<Post> list = topicDict.get(topicName);
+                    int i = 0;
+                    for (i; i < list.getLength();i++) {
+                        cout << "Post " << i + 1 << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| username | " << setw(10) << list.get(i).getUser() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Topic    | " << setw(10) << list.get(i).getTopic() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Title    | " << setw(10) << list.get(i).getPostTitle() << "|" << endl;
+                        cout << "+----------------------+" << endl;
+                        cout << "| Content  | " << setw(10) << list.get(i).getDescription() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "\n";
+                    }
+                    if (i == 0) {
+                        cout << "No post for this topic yet." << endl;
+                    }
+                }
+                else {
+                    cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
+                }
             }
             else if (option == 5) {
                 cout << "option5" << endl;
@@ -117,17 +141,7 @@ Dictionary<string> loadInfo() {
         string name, password, post;
         getline(ss, name, ',');
         getline(ss, password, ',');
-        vector<string> posts;
-        while (getline(ss, post, ',')) posts.push_back(post);
         d.add(name, password);
-        cout << "posts: ";
-        for (const auto& post : posts) {
-            //here is where you populate the posts dictionary
-            //im thinking have two itemtype (if possible) e.g. Key: Topic Itemtype1: name Itemtype 2: post
-            //the replies i planning to store it in diff txt file so maybe each post have a txt file for itself
-            cout << post << " ";
-        } 
-        cout << "\n";
     }
     file.close();
     return d;
@@ -135,12 +149,12 @@ Dictionary<string> loadInfo() {
 
 Dictionary<List<Post>> loadTopic() {
     Dictionary<List<Post>> d = Dictionary<List<Post>>();
-    List<Post> list = List<Post>();
+    Post p;
     string line;
     ifstream myfile("topics.txt");
     if (myfile.is_open()) {
         while (getline(myfile, line)) {
-            cout << line << endl;
+            List<Post> list = p.readTextFileByTopic(line);
             d.add(line, list);
         }
         myfile.close();
@@ -186,7 +200,7 @@ void userLogin(Dictionary<string> userData) {
     cin >> username;
     cout << "Enter password: ";
     cin >> password;
-    if (userData.check(username, password)) {
+    if (userData.contain(username, password)) {
         loggedIn = true;
         currentUser = User(username, password);
         cout << "Successful" << endl;
@@ -202,7 +216,7 @@ void userSignUp(Dictionary<string> userData)
     string password;
     cout << "Enter username: ";
     cin >> username;
-    while (userData.check(username)){
+    while (userData.contain(username)){
         cout << "Username is taken, please enter another name: ";
         cin >> username;
     }

@@ -57,5 +57,6 @@ void Topic::saveToTextFile()
         // the file if need be
         file << topicName << endl;
         file.close();
+        cout << "Created!" << endl;
     }
 }

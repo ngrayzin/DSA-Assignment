@@ -1,4 +1,4 @@
-billy,123456,post
-nil,123sdf,post
-asd,233,post
-john,123456,post
+billy,123456
+nil,123sdf
+asd,233
+john,123456

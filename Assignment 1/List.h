@@ -195,12 +195,10 @@ int List<ItemType>::getLength()
 template <typename ItemType>
 void List<ItemType>::print()
 {
-	/*Node* current;
-	current = firstNode;
-
-	while (current != NULL) {
-		cout << current->item << "." << endl;
-		current = current->next;
-	}*/
+    Node *current = firstNode;
+    while (current != nullptr)
+    {
+        cout << current->item << endl;
+        current = current->next;
+    }
 }
-

@@ -1,6 +1,7 @@
 #include "User.h"
 #include"Dictionary.h"
 #include<fstream>
+#include "Post.h"
 
 User::User() {}
 
@@ -17,6 +18,7 @@ string User::getName(){return name;}
 void User::setPassword(string pw){password = pw;}
 
 string User::getPassword() { return password; }
+
 
 void User::saveToTextFile()
 {
@@ -38,7 +40,7 @@ void User::saveToTextFile()
     else {
         // then add more lines to
         // the file if need be
-        file << name << "," << password << "," << "post" << endl;
+        file << name << "," << password <<  endl;
         file.close();
     }
 

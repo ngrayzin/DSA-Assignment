@@ -55,9 +55,9 @@ public:
 
     ItemType& getAddress(KeyType key);
 
-	bool check(KeyType key, ItemType item);
+	bool contain(KeyType key, ItemType item);
 
-	bool check(KeyType key);
+	bool contain(KeyType key);
 
 	// check if the Dictionary is empty
 	// pre : none
@@ -72,6 +72,8 @@ public:
 	int getLength();
 
     void print();
+
+    //List<ItemType> getAll();
 	//------------------- Other useful functions -----------------
 
 	// display the items in the Dictionary
@@ -251,7 +253,7 @@ ItemType& Dictionary<ItemType>::getAddress(KeyType key)
 }
 
 template <typename ItemType>
-bool Dictionary<ItemType>::check(KeyType key, ItemType item)
+bool Dictionary<ItemType>::contain(KeyType key, ItemType item)
 {
     int index = hash(key);
     if (items[index] != NULL) {
@@ -267,7 +269,7 @@ bool Dictionary<ItemType>::check(KeyType key, ItemType item)
 }
 
 template <typename ItemType>
-bool Dictionary<ItemType>::check(KeyType key)
+bool Dictionary<ItemType>::contain(KeyType key)
 {
     int index = hash(key);
     if (items[index] != NULL) {
@@ -293,6 +295,15 @@ int Dictionary<ItemType>::getLength()
 {
     return size;
 }
+
+//template <typename ItemType>
+//List<ItemType> Dictionary<ItemType>::getAll() {
+//    List<ItemType> values;
+//    for (int i = 0; i < keys.getLength(); i++) {
+//        values.add(items[i]);
+//    }
+//    return values;
+//}
 
 template <typename ItemType>
 void Dictionary<ItemType>::print() {
