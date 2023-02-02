@@ -12,7 +12,6 @@ private:
 		ItemType item;
 		Node* next;	// pointer pointing to next item
 	};
-
 	Node* firstNode;	// point to the first item
 	int  size;			// number of items in the list
 

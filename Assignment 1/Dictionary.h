@@ -53,6 +53,8 @@ public:
 	// return the item with the specified key from the Dictionary
 	ItemType get(KeyType key);
 
+    ItemType& getAddress(KeyType key);
+
 	bool check(KeyType key, ItemType item);
 
 	bool check(KeyType key);
@@ -69,7 +71,7 @@ public:
 	// return the number of items in the Dictionary
 	int getLength();
 
-    void printTopic();
+    void print();
 	//------------------- Other useful functions -----------------
 
 	// display the items in the Dictionary
@@ -234,6 +236,21 @@ ItemType Dictionary<ItemType>::get(KeyType key)
 }
 
 template <typename ItemType>
+ItemType& Dictionary<ItemType>::getAddress(KeyType key)
+{
+    int index = hash(key);
+    if (items[index] != NULL) {
+        Node* current = items[index];
+        while (current != NULL) {
+            if (current->key == key) {
+                return current->item;
+            }
+            current = current->next;
+        }
+    }
+}
+
+template <typename ItemType>
 bool Dictionary<ItemType>::check(KeyType key, ItemType item)
 {
     int index = hash(key);
@@ -278,35 +295,19 @@ int Dictionary<ItemType>::getLength()
 }
 
 template <typename ItemType>
-void Dictionary<ItemType>::printTopic() {
+void Dictionary<ItemType>::print() {
     int count = 1;
-    cout << "List of available topics:" << endl;
-    for (int i = 0; i < MAX_SIZE; i++) {
-        if (items[i] != NULL) {
-            cout << "[" << count << "] " << items[i]->key << endl;
-            count++;
+    if (size > 0) {
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (items[i] != NULL) {
+                cout << "[" << count << "] " << items[i]->key << endl;
+                count++;
+            }
         }
     }
+    else {
+        cout << "no content" << endl;
+    }
 }
-
-//template <typename ItemType>
-//void Dictionary<ItemType>::print()
-//{
-//    for (int i = 0; i < MAX_SIZE; i++)
-//    {
-//        if (items[i] == nullptr)
-//        {
-//            continue;
-//        }
-//
-//        Node* current = items[i];
-//        while (current != nullptr)
-//        {
-//            cout << current->key << ", " << current->item.operator << endl;
-//            current = current->next;
-//        }
-//    }
-//    cout << endl;
-//}
 
 

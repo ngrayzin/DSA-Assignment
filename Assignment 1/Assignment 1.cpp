@@ -67,30 +67,26 @@ int main()
                 string postTopic;
                 string title;
                 string desc;
-                topicDict.printTopic();
+                cout << "List of available topics:" << endl;
+                topicDict.print();
                 cout << "Enter what topic this post is about: ";
                 cin >> postTopic;
-                if (topicDict.check(postTopic) == true) {
+                if (topicDict.check(postTopic)) {
                     cout << "Enter the post's title: ";
                     cin >> title;
                     cout << "Enter the post's description: ";
                     cin >> desc;
-                    Post p(title, desc, currentUser, postTopic);
-                    List<Post> list = topicDict.get(postTopic);
-                    list.add(p);
-                    cout << list.getLength() << endl;
+                    Post p = Post(title, desc, currentUser, postTopic);
+                    topicDict.getAddress(postTopic).add(p);
+                    cout << topicDict.get(postTopic).getLength() << endl;
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
                 }
             }
             else if (option == 4) {
-                if (topicDict.getLength() > 0) {
-                    topicDict.printTopic();
-                }
-                else {
-                    cout << "Nothing to print" << endl;
-                }
+                cout << "List of available topics:" << endl;
+                topicDict.print();
             }
             else if (option == 5) {
                 cout << "option5" << endl;
@@ -158,11 +154,11 @@ Dictionary<List<Post>> loadTopic() {
 void login()
 {
     cout << endl;
-    cout << "Welcome to nibba land" << endl;
+    cout << "Welcome to forum     " << endl;
     cout << "---------------------" << endl;
-    cout << "[1] Login         " << endl;
-    cout << "[2] Sign up            " << endl;
-    cout << "[0] Exit            " << endl;
+    cout << "[1] Login            " << endl;
+    cout << "[2] Sign up          " << endl;
+    cout << "[0] Exit             " << endl;
     cout << "---------------------" << endl;
     cout << "Enter your option: ";
 }
