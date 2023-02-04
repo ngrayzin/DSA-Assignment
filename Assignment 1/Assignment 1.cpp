@@ -9,6 +9,8 @@
 #include "Post.h"
 #include "List.h"
 #include "Stack.h"
+#define UNDERLINE "\033[4m"
+#define CLOSEUNDERLINE "\033[0m"
 using namespace std;
 
 Dictionary<string> loadInfo();
@@ -253,9 +255,12 @@ void postDetails(Post post, int i, List<string> likeList) {
     cout << "+----------------------+" << endl;
     cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
     cout << "+----------+-----------+" << endl;
-    cout << "Likes: " << post.getLikeList().getLength() << endl;
+    cout << "Likes: " << likeList.getLength() << endl;
     cout << "Comments: " << post.getReplies().getLength() << endl;
     cout << "\n";
+    cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
+    post.printReplies();
+    cout << endl;
     cout << "------------------------" << endl;
     if (likeList.contain(currentUser.getName())) {
         cout << "[1] Unlike Post "  << i << endl;
