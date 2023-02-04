@@ -4,10 +4,10 @@
 #pragma once
 
 class Reply {
-public:
+private:
     string reply;
 
-private:
+public:
     Reply();
     Reply(string reply);
     void updateReply(string newReply);

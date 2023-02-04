@@ -20,9 +20,10 @@ public:
 	bool pop();
 	bool pop(StackType& item);
 	bool isEmpty();
-	void displayInOrder();
-	void displayInOrderOfInsertion();
+	Stack<StackType> inverseStack();
 	void clear(Stack& s);
+	StackType top();
+	int getLength();
 };
 
 template <class StackType> Stack<StackType>::Stack() {
@@ -95,24 +96,14 @@ template <class StackType> bool Stack<StackType>::isEmpty() {
 	else { return false; }
 }
 
-template <class StackType> void Stack<StackType>::displayInOrderOfInsertion() {
+template <class StackType> Stack<StackType> Stack<StackType>::inverseStack() {
 	Stack nStack;
 	Node* current = topNode;
 	while (current != NULL) {
 		nStack.push(current->item);
 		current =current->next;
 	}
-	nStack.displayInOrder();
-}
-
-template <class StackType> void Stack<StackType>::displayInOrder() {
-	if (topNode != NULL) {
-		Node* current = topNode;
-		while (current != NULL) {
-			cout << current->item << endl;
-			current = current->next;
-		}
-	}
+	return nStack;
 }
 
 template <class StackType> void Stack<StackType>::clear(Stack<StackType>& s) {
@@ -123,4 +114,18 @@ template <class StackType> void Stack<StackType>::clear(Stack<StackType>& s) {
 		remove = NULL;
 		delete remove;
 	}
+}
+
+template <class StackType> int Stack<StackType>::getLength() {
+	int count = 0;
+	Node* curr = topNode;
+	while (curr != NULL) {
+		count++;
+		curr = curr->next;
+	}
+	return count;
+}
+
+template <class StackType> StackType Stack<StackType>::top() {
+	return topNode->item;
 }

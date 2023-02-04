@@ -9,6 +9,9 @@
 #include "Post.h"
 #include "List.h"
 #include "Stack.h"
+#define UNDERLINE "\033[4m"
+#define CLOSEUNDERLINE "\033[0m"
+
 using namespace std;
 
 Dictionary<string> loadInfo();
@@ -125,7 +128,13 @@ int main()
                                     }
                                 }
                                 else if (detailOption == 2) {
-                                    //replies :3
+                                    string replyMsg;
+                                    cout << "Enter your message: ";
+                                    cin >> replyMsg;
+                                    p.addReply(replyMsg);
+                                    cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
+                                    p.printReplies();
+                                    cout << endl;
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
@@ -142,6 +151,7 @@ int main()
                 }
             }
             else if (option == 5) {
+                
             }
             else if (option == 6) {
                 loggedIn = false;
@@ -246,7 +256,7 @@ void postDetails(Post post, int i) {
     cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
     cout << "+----------+-----------+" << endl;
     cout << "Likes: " << post.getLikeList().getLength() << endl;
-    cout << "Comments: " << "this will be post.getStack().getLength()" << endl;
+    cout << "Comments: " << post.getReplies().getLength() << endl;
     cout << "\n";
     cout << "------------------------" << endl;
     cout << "[1] Like Post " << i << endl;
