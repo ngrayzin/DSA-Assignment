@@ -8,6 +8,7 @@
 #include "Topic.h"
 #include "Post.h"
 #include "List.h"
+#include "Stack.h"
 using namespace std;
 
 Dictionary<string> loadInfo();
@@ -107,13 +108,37 @@ int main()
                     if (i == 0) {
                         cout << "No post for this topic yet." << endl;
                     }
+                    if (i > 0) {
+                        int replyOption;
+                        cout << "Would you like to reply to any of these?" << endl << "[1] Yes" << endl << "[2] No" << endl << "Enter your option: ";
+                        cin >> replyOption;
+                        
+
+                        if (replyOption == 1) {
+                            string replyTitle;
+                            cout << "Enter the title of the post you would like to reply to: ";
+                            cin >> replyTitle;
+                        }
+                    }
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
                 }
             }
             else if (option == 5) {
-                cout << "option5" << endl;
+                Stack<string> s;
+                string i;
+                cout << s.isEmpty() << endl;
+                s.push("POPOPOP");
+                s.push("PEPEPEPEPE");
+                s.push("SHESHESHESHE");
+                s.displayInOrder();
+                s.pop(i);
+                cout << s.isEmpty() << endl;
+                cout << i << endl;
+                cout << endl;
+                s.clear(s);
+                s.displayInOrderOfInsertion();
             }
             else if (option == 6) {
                 loggedIn = false;

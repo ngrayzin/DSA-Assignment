@@ -4,6 +4,7 @@
 #include "User.h"
 #include <sstream>
 #include<fstream>
+#include "Stack.h"
 
 class Post {
 private:
@@ -11,6 +12,7 @@ private:
 	string title;
 	string description;
 	string username;
+	Stack<string> replies;
 	int likes = 0;
 
 
