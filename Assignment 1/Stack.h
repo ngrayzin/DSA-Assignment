@@ -24,10 +24,10 @@ public:
 	bool pop();
 	bool pop(ItemType& item);
 	bool isEmpty();
-	void displayInOrder();
-	void displayInOrderOfInsertion();
-	void clear(Stack<ItemType>& s);
-	void saveToTextFile(string postTitle, string d, string un, string t);
+	Stack<StackType> inverseStack();
+	void clear(Stack& s);
+	StackType top();
+	int getLength();
 };
 
 template <typename ItemType>
@@ -107,30 +107,10 @@ bool Stack<ItemType>::isEmpty() {
 	else { return false; }
 }
 
-template <typename ItemType>
-void Stack<ItemType>::displayInOrderOfInsertion() {
-	Stack nStack;
-	Node* current = topNode;
-	while (current != NULL) {
-		nStack.push(current->item);
-		current =current->next;
-	}
-	nStack.displayInOrder();
-}
+template <class StackType> Stack<StackType> Stack<StackType>::inverseStack() {
 
-template <typename ItemType>
-void Stack<ItemType>::displayInOrder() {
-	if (topNode != NULL) {
-		Node* current = topNode;
-		while (current != NULL) {
-			cout << current->item << endl;
-			current = current->next;
-		}
-	}
-}
 
-template <typename ItemType>
-void Stack<ItemType>::clear(Stack<ItemType>& s) {
+template <class StackType> void Stack<StackType>::clear(Stack<StackType>& s) {
 	while (s.topNode)
 	{
 		Node* remove = s.topNode;
@@ -138,37 +118,51 @@ void Stack<ItemType>::clear(Stack<ItemType>& s) {
 		remove = NULL;
 		delete remove;
 	}
-}
 
-template <typename ItemType>
-void Stack<ItemType>::saveToTextFile(string postTitle, string d, string un, string t)
-{
-	ifstream ifile("posts.txt", ios::in);
-	vector<string> lines;
-	string line;
-	while (getline(ifile, line)) {
-		stringstream ss(line);
-		string title, desc, username, topic;
-		getline(ss, title, ',');
-		getline(ss, desc, ',');
-		getline(ss, username, ',');
-		getline(ss, topic, ',');
-		if (title == postTitle && desc == d && username == un && topic == t) {
-			line += ",";
-			if (topNode != NULL) {
-				Node* current = topNode;
-				while (current != NULL) {
-					line += current->item;
-					current = current->next;
+	template <typename ItemType>
+	void Stack<ItemType>::saveToTextFile(string postTitle, string d, string un, string t)
+	{
+		ifstream ifile("posts.txt", ios::in);
+		vector<string> lines;
+		string line;
+		while (getline(ifile, line)) {
+			stringstream ss(line);
+			string title, desc, username, topic;
+			getline(ss, title, ',');
+			getline(ss, desc, ',');
+			getline(ss, username, ',');
+			getline(ss, topic, ',');
+			if (title == postTitle && desc == d && username == un && topic == t) {
+				line += ",";
+				if (topNode != NULL) {
+					Node* current = topNode;
+					while (current != NULL) {
+						line += current->item;
+						current = current->next;
+					}
 				}
 			}
+			lines.push_back(line);
 		}
-		lines.push_back(line);
-	}
-	ifile.close();
+		ifile.close();
 
-	ofstream file("posts.txt", ios::out);
-	for (auto& l : lines)
-		file << l << endl;
-	file.close();
+		ofstream file("posts.txt", ios::out);
+		for (auto& l : lines)
+			file << l << endl;
+		file.close();
+	}
+}
+
+template <class StackType> int Stack<StackType>::getLength() {
+	int count = 0;
+	Node* curr = topNode;
+	while (curr != NULL) {
+		count++;
+		curr = curr->next;
+	}
+	return count;
+}
+
+template <class StackType> StackType Stack<StackType>::top() {
+	return topNode->item;
 }

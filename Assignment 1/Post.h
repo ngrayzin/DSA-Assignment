@@ -31,11 +31,12 @@ public:
 	void saveToTextFile();
 	void setLikeList(List<string> likeList);
 	List<string> getLikeList();
-	void setReplies(Stack<Reply> replyStack);
-	Stack<Reply> getReplies();
 	void readTextFileByUser(User user);
 	List<Post> readTextFileByTopic(string topicName);
-	bool addReply(string replyMsg);
+	void addReply(string replyMsg);
+	void setReplies(Stack<Reply> replyStack);
 	void printReplies();
+	void printReplies(int count,Stack<Reply> replyList);
+	Stack<Reply> getReplies();
 
 };

@@ -94,15 +94,6 @@ List<string> Post::getLikeList()
     return likeList;
 }
 
-void Post::setReplies(Stack<Reply> replyStack)
-{
-    replies = replyStack;
-}
-
-Stack<Reply> Post::getReplies()
-{
-    return replies;
-}
 
 void Post::readTextFileByUser(User user)
 {
@@ -161,3 +152,36 @@ List<Post> Post::readTextFileByTopic(string topicName)
     file.close();
     return list;
 }
+
+void Post::addReply(string msg) {
+    Reply newReply(msg);
+    replies.push(newReply);
+}
+
+void Post::setReplies(Stack<Reply> replyStack)
+{
+    replies = replyStack;
+}
+
+Stack<Reply> Post::getReplies()
+{
+    return replies;
+}
+
+void Post::printReplies() {
+    int count = 1;
+    Stack<Reply> replyList = replies.inverseStack();
+    printReplies(count, replyList);
+}
+
+void Post::printReplies(int count,Stack<Reply> replyList) {
+    if (replyList.isEmpty()) {
+        return;
+    }
+    Reply r = replyList.top();
+    replyList.pop();
+    cout << "[" << count << "] " << r.getReply() << endl;
+    printReplies(count+1,replyList);
+    replyList.push(r);
+}
+
