@@ -4,6 +4,7 @@
 #include "User.h"
 #include <sstream>
 #include<fstream>
+#include "Stack.h"
 
 class Post {
 private:

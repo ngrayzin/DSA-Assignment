@@ -8,6 +8,7 @@
 #include "Topic.h"
 #include "Post.h"
 #include "List.h"
+#include "Stack.h"
 using namespace std;
 
 Dictionary<string> loadInfo();
@@ -140,7 +141,6 @@ int main()
                 }
             }
             else if (option == 5) {
-                cout << "option5" << endl;
             }
             else if (option == 6) {
                 loggedIn = false;
