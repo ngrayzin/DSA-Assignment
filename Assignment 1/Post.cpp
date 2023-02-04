@@ -13,11 +13,12 @@ Post::Post()
 {
 }
 
-Post::Post(string t, string d, string un, string top) {
+Post::Post(string t, string d, string un, string top, List<string> list) {
 	title = t;
 	description = d;
 	username = un;
 	topic = top;
+    likeList = list;
 }
 
 void Post::setPostTitle(string t) {
@@ -80,6 +81,16 @@ void Post::saveToTextFile()
 
 }
 
+void Post::setLikeList(List<string> likeList)
+{
+    likeList = likeList;
+}
+
+List<string> Post::getLikeList()
+{
+    return likeList;
+}
+
 void Post::readTextFileByUser(User user)
 {
     ifstream file("posts.txt");
@@ -120,6 +131,7 @@ List<Post> Post::readTextFileByTopic(string topicName)
     ifstream file("posts.txt");
     string line;
     List<Post> list = List<Post>();
+    List<string> likeList = List<string>();
     while (getline(file, line)) {
         stringstream ss(line);
         string title, desc, username, topic;
@@ -128,7 +140,7 @@ List<Post> Post::readTextFileByTopic(string topicName)
         getline(ss, username, ',');
         getline(ss, topic, ',');
         if (topicName == topic) {
-            Post p(title, desc, username, topic);
+            Post p(title, desc, username, topic, likeList);
             list.add(p);
         }
     }

@@ -11,12 +11,12 @@ private:
 	string title;
 	string description;
 	string username;
-	int likes = 0;
+	List<string> likeList;
 
 
 public:
 	Post();
-	Post(string title, string description, string username, string topic);
+	Post(string title, string description, string username, string topic, List<string> likeList);
 	void setPostTitle(string title);
 	string getPostTitle();
 	void setDescription(string description);
@@ -26,6 +26,8 @@ public:
 	void setTopic(string topic);
 	string getTopic();
 	void saveToTextFile();
+	void setLikeList(List<string> likeList);
+	List<string> getLikeList();
 	void readTextFileByUser(User user);
 	List<Post> readTextFileByTopic(string topicName);
 };

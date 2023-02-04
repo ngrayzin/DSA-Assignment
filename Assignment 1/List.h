@@ -40,11 +40,24 @@ public:
 	//       size of list is decreased by 1
 	void remove(int index);
 
+	// remove an item via the itemtype
+	// pre : 0 <= index < size
+	// post: item is removed the specified position in the list
+	//       items after the position are shifted forward by 1 position
+	//       size of list is decreased by 1
+	void remove(ItemType item);
+
 	// get an item at a specified position of the list (retrieve)
 	// pre : 0 <= index < size
 	// post: none
 	// return the item in the specified index of the list
 	ItemType get(int index);
+
+	// See if this item is in the list
+	// pre : 0 <= index < size
+	// post: none
+	// return the item in the specified index of the list
+	bool contain(ItemType item);
 
 	// check if the list is empty
 	// pre : none
@@ -163,6 +176,24 @@ void List<ItemType>::remove(int index)
 }
 
 template <typename ItemType>
+void List<ItemType>::remove(ItemType item)
+{
+	Node* current = firstNode;
+	for (int i = 0;i < size - 1;i++) {
+		if (current->item == item) {
+			if (current == firstNode) {
+				firstNode = firstNode->next;
+			}
+			else {
+				current->next = current->next->next;
+			}
+		}
+		current = current->next;
+	}
+	size--;
+}
+
+template <typename ItemType>
 ItemType List<ItemType>::get(int index)
 {
 	// If index is valid
@@ -170,13 +201,30 @@ ItemType List<ItemType>::get(int index)
 		// Traverse the list to the index
 		Node* current = firstNode;
 		for (int i = 0; i <= (index - 1); i++)
-			current = current->next;
+			if (current->next != NULL) {
+				current = current->next;
+			}
 
 		// Return the item contained in the node
 		return current->item;
 	}
 
 	return ItemType();
+}
+
+template<typename ItemType>
+bool List<ItemType>::contain(ItemType item)
+{
+	Node* current = firstNode;
+	for (int i = 0; i <= size-1; i++) {
+		if (current->item == item) {
+			return true;
+		}
+		if (current->next != NULL) {
+			current = current->next;
+		}
+	}
+	return false;
 }
 
 template <typename ItemType>
