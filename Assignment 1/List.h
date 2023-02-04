@@ -1,6 +1,10 @@
 #pragma once
-#include<string>
-#include<iostream>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <vector>
+
 using namespace std;
 
 template <typename ItemType>
@@ -54,9 +58,9 @@ public:
 	ItemType get(int index);
 
 	// See if this item is in the list
-	// pre : 0 <= index < size
+	// pre : none
 	// post: none
-	// return the item in the specified index of the list
+	// return true if the item is in the list; otherwise returns false
 	bool contain(ItemType item);
 
 	// check if the list is empty
@@ -75,6 +79,8 @@ public:
 
 	// display the items in the list
 	void print();
+
+	void saveToTextFile(string postTitle, string desc, string un, string topic);
 
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
@@ -212,6 +218,7 @@ ItemType List<ItemType>::get(int index)
 	return ItemType();
 }
 
+
 template<typename ItemType>
 bool List<ItemType>::contain(ItemType item)
 {
@@ -249,4 +256,35 @@ void List<ItemType>::print()
         cout << current->item << endl;
         current = current->next;
     }
+}
+
+template<typename ItemType>
+void List<ItemType>::saveToTextFile(string postTitle, string d, string un, string t)
+{
+	ifstream ifile("posts.txt", ios::in);
+	vector<string> lines;
+	string line;
+	while (getline(ifile, line)) {
+		stringstream ss(line);
+		string title, desc, username, topic;
+		getline(ss, title, ',');
+		getline(ss, desc, ',');
+		getline(ss, username, ',');
+		getline(ss, topic, ',');
+		if (title == postTitle && desc == d && username == un && topic == t) {
+			line += ",";
+			Node* current = firstNode;
+			while (current != nullptr) {
+				line += current->item;
+				current = current->next;
+			}
+		}
+		lines.push_back(line);
+	}
+	ifile.close();
+
+	ofstream file("posts.txt", ios::out);
+	for (auto& l : lines)
+		file << l << endl;
+	file.close();
 }

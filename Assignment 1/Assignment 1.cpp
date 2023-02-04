@@ -9,6 +9,7 @@
 #include "Post.h"
 #include "List.h"
 #include "Stack.h"
+#include "Reply.h"
 using namespace std;
 
 Dictionary<string> loadInfo();
@@ -16,7 +17,7 @@ Dictionary<List<Post>> loadTopic();
 void displayMenu();
 void login();
 void printPost(Post post);
-void postDetails(Post post, int i);
+void postDetails(Post post, int i, List<string> likeList);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 
@@ -109,19 +110,20 @@ int main()
                         cin >> seePost;
                         if (i >= seePost && 0 <= seePost) {
                             Post p = list.get(seePost - 1);
+                            List<string> list = p.getLikeList();
                             int detailOption = 1;
                             while (detailOption != 3) {
-                                postDetails(p, seePost);
+                                postDetails(p, seePost, list);
                                 cout << "Enter option: ";
                                 cin >> detailOption;
                                 if (detailOption == 1) {
-                                    List<string> likeList = p.getLikeList();
+                                    List<string>& likeList = list;
                                     if (likeList.contain(currentUser.getName())) {
                                         likeList.remove(currentUser.getName()); //unlike post :(
                                     }
                                     else {
                                         likeList.add(currentUser.getName());//like post :3
-                                        cout << likeList.getLength() << endl;
+                                        likeList.saveToTextFile(p.getPostTitle(), p.getDescription(), p.getUser(), p.getTopic());
                                     }
                                 }
                                 else if (detailOption == 2) {
@@ -234,7 +236,7 @@ void printPost(Post post) {
     cout << "\n";
 }
 
-void postDetails(Post post, int i) {
+void postDetails(Post post, int i, List<string> likeList) {
     cout << "Post " << i << endl;
     cout << "+----------+-----------+" << endl;
     cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
@@ -245,13 +247,21 @@ void postDetails(Post post, int i) {
     cout << "+----------------------+" << endl;
     cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
     cout << "+----------+-----------+" << endl;
-    cout << "Likes: " << post.getLikeList().getLength() << endl;
+    cout << "Likes: " << likeList.getLength() << endl;
     cout << "Comments: " << "this will be post.getStack().getLength()" << endl;
     cout << "\n";
     cout << "------------------------" << endl;
-    cout << "[1] Like Post " << i << endl;
-    cout << "[2] Comment Post " << i << endl;
-    cout << "[3] Back to browse" << endl;
+    if (likeList.contain(currentUser.getName())) {
+        cout << "[1] Unlike Post "  << i << endl;
+        cout << "[2] Comment Post " << i << endl;
+        cout << "[3] Back to browse" << endl;
+    }
+    else {
+        cout << "[1] Like Post " << i << endl;
+        cout << "[2] Comment Post " << i << endl;
+        cout << "[3] Back to browse" << endl;
+    }
+
 }
 
 void userLogin(Dictionary<string> userData) {

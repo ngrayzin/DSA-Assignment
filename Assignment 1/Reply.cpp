@@ -1,7 +1,7 @@
-#include "Reply.h"
-using namespace std;
 #include <string>
 #include <iostream>
+#include "Reply.h"
+using namespace std;
 
 Reply::Reply() {}
 
