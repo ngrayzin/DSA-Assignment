@@ -12,7 +12,7 @@ private:
 	string title;
 	string description;
 	string username;
-	Stack<string> replies;
+	//Stack<string> replies;
 	int likes = 0;
 
 

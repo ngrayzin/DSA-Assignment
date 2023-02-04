@@ -126,19 +126,6 @@ int main()
                 }
             }
             else if (option == 5) {
-                Stack<string> s;
-                string i;
-                cout << s.isEmpty() << endl;
-                s.push("POPOPOP");
-                s.push("PEPEPEPEPE");
-                s.push("SHESHESHESHE");
-                s.displayInOrder();
-                s.pop(i);
-                cout << s.isEmpty() << endl;
-                cout << i << endl;
-                cout << endl;
-                s.clear(s);
-                s.displayInOrderOfInsertion();
             }
             else if (option == 6) {
                 loggedIn = false;
