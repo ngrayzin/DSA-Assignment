@@ -143,6 +143,7 @@
     <ClCompile Include="Dictionary.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="Post.cpp" />
+    <ClCompile Include="Reply.cpp" />
     <ClCompile Include="Topic.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Post.h" />
+    <ClInclude Include="Reply.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Topic.h" />
     <ClInclude Include="User.h" />

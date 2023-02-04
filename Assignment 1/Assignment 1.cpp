@@ -15,8 +15,6 @@ Dictionary<string> loadInfo();
 Dictionary<List<Post>> loadTopic();
 void displayMenu();
 void login();
-void printPost(Post post);
-void postDetails(Post post, int i);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 
@@ -76,8 +74,7 @@ int main()
                     cin >> title;
                     cout << "Enter the post's description: ";
                     cin >> desc;
-                    List<string> likeList = List<string>();
-                    Post p = Post(title, desc, currentUser.getName(), topicName, likeList);
+                    Post p = Post(title, desc, currentUser.getName(), topicName);
                     topicDict.get(topicName).add(p);
                     p.saveToTextFile();
                     cout << topicDict.get(topicName).getLength() << endl;
@@ -90,49 +87,36 @@ int main()
                 cout << "List of available topics:" << endl;
                 topicDict.print();
                 string topicName;
-                cout << "Type the topic name that you would like to browse: ";
+                cout << "Which topic would you like to browse: ";
                 cin >> topicName;
                 if (topicDict.contain(topicName)) {
                     List<Post> list = topicDict.get(topicName);
                     int i = 0;
                     for (i; i < list.getLength();i++) {
                         cout << "Post " << i + 1 << endl;
-                        printPost(list.get(i));
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| username | " << setw(10) << list.get(i).getUser() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Topic    | " << setw(10) << list.get(i).getTopic() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Title    | " << setw(10) << list.get(i).getPostTitle() << "|" << endl;
+                        cout << "+----------------------+" << endl;
+                        cout << "| Content  | " << setw(10) << list.get(i).getDescription() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "\n";
                     }
                     if (i == 0) {
                         cout << "No post for this topic yet." << endl;
                     }
-                    else {
-                        int seePost;
-                        cout << "Which post number you want to see: ";
-                        cin >> seePost;
-                        if ( i >= seePost && 0 <= seePost) {
-                            Post p = list.get(seePost-1);
-                            int detailOption = 1;
-                            while (detailOption != 3) {
-                                postDetails(p, seePost);
-                                cout << "Enter option: ";
-                                cin >> detailOption;
-                                if (detailOption == 1) {
-                                    List<string> likeList = p.getLikeList();
-                                    if (likeList.contain(currentUser.getName())) {
-                                        likeList.remove(currentUser.getName()); //unlike post :(
-                                    }
-                                    else {
-                                        likeList.add(currentUser.getName());//like post :3
-                                        cout << likeList.getLength() << endl;
-                                    }
-                                }
-                                else if (detailOption == 2) {
-                                    //replies :3
-                                }
-                                else if (detailOption == 3) {
-                                    cout << "back" << endl;
-                                }         
-                            } 
-                        }
-                        else {
-                            cout << "Out of index." << endl;
+                    if (i > 0) {
+                        int replyOption;
+                        cout << "Would you like to reply to any of these?" << endl << "[1] Yes" << endl << "[2] No" << endl << "Enter your option: ";
+                        cin >> replyOption;
+                        if (replyOption == 1) {
+                            string replyTitle;
+                            cout << "Enter the title of the post you would like to reply to: ";
+                            cin >> replyTitle;
+                            cout << "Suicidal thoughts - Ray Zin" << endl;
                         }
                     }
                 }
@@ -218,39 +202,6 @@ void displayMenu()
     cout << "[0] Exit             " << endl;
     cout << "---------------------" << endl;
     cout << "Enter your option: ";
-}
-
-void printPost(Post post) {
-    cout << "+----------+-----------+" << endl;
-    cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Topic    | " << setw(10) << post.getTopic() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Title    | " << setw(10) << post.getPostTitle() << "|" << endl;
-    cout << "+----------------------+" << endl;
-    cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "\n";
-}
-
-void postDetails(Post post, int i) {
-    cout << "Post " << i << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Topic    | " << setw(10) << post.getTopic() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Title    | " << setw(10) << post.getPostTitle() << "|" << endl;
-    cout << "+----------------------+" << endl;
-    cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "Likes: " << post.getLikeList().getLength() << endl;
-    cout << "Comments: " << "this will be post.getStack().getLength()" << endl;
-    cout << "\n";
-    cout << "------------------------" << endl;
-    cout << "[1] Like Post " << i      << endl;
-    cout << "[2] Comment Post " << i   << endl;
-    cout << "[3] Back to browse"       << endl;
 }
 
 void userLogin(Dictionary<string> userData) {
