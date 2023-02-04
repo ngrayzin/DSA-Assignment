@@ -6,6 +6,8 @@
 #include <sstream>
 #include<fstream>
 #include <iomanip>
+#include "Stack.h"
+#include "Reply.h"
 
 using namespace std;
 
@@ -13,12 +15,13 @@ Post::Post()
 {
 }
 
-Post::Post(string t, string d, string un, string top, List<string> list) {
+Post::Post(string t, string d, string un, string top, List<string> list, Stack<Reply> stack) {
 	title = t;
 	description = d;
 	username = un;
 	topic = top;
     likeList = list;
+    replies = stack;
 }
 
 void Post::setPostTitle(string t) {
@@ -91,6 +94,16 @@ List<string> Post::getLikeList()
     return likeList;
 }
 
+void Post::setReplies(Stack<Reply> replyStack)
+{
+    replies = replyStack;
+}
+
+Stack<Reply> Post::getReplies()
+{
+    return replies;
+}
+
 void Post::readTextFileByUser(User user)
 {
     ifstream file("posts.txt");
@@ -132,6 +145,7 @@ List<Post> Post::readTextFileByTopic(string topicName)
     string line;
     List<Post> list = List<Post>();
     List<string> likeList = List<string>();
+    Stack<Reply> replyStack = Stack<Reply>();
     while (getline(file, line)) {
         stringstream ss(line);
         string title, desc, username, topic;
@@ -140,7 +154,7 @@ List<Post> Post::readTextFileByTopic(string topicName)
         getline(ss, username, ',');
         getline(ss, topic, ',');
         if (topicName == topic) {
-            Post p(title, desc, username, topic, likeList);
+            Post p(title, desc, username, topic, likeList, replyStack);
             list.add(p);
         }
     }
