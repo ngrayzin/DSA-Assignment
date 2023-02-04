@@ -12,6 +12,7 @@ private:
 	string title;
 	string description;
 	string username;
+	Stack<string> replies;
 	List<string> likeList;
 
 
@@ -31,4 +32,7 @@ public:
 	List<string> getLikeList();
 	void readTextFileByUser(User user);
 	List<Post> readTextFileByTopic(string topicName);
+	bool addReply(string replyMsg);
+	void printReplies();
+
 };
