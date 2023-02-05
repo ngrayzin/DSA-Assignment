@@ -55,9 +55,17 @@ public:
 
     ItemType& getAddress(KeyType key);
 
-	bool contain(KeyType key, ItemType item);
+    // see if the key and itemtype exists in the dictionary
+    // pre : none
+    // post: none
+    // return true if the key and itemtype exists in the dictionary; otherwise returns false;
+    bool contain(KeyType key, ItemType item);
 
-	bool contain(KeyType key);
+    // see if the key exists in the dictionary
+    // pre : none
+    // post: none
+    // return true if the key exists in the dictionary; otherwise returns false;
+    bool contain(KeyType key);
 
 	// check if the Dictionary is empty
 	// pre : none

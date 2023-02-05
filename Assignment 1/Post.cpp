@@ -59,9 +59,9 @@ string Post::getTopic()
 	return topic;
 }
 
-void Post::setLikeList(List<string> likeList)
+void Post::setLikeList(List<string> list)
 {
-    likeList = likeList;
+    likeList = list;
 }
 
 void Post::addLikes(string name)
@@ -154,7 +154,7 @@ void Post::updateTextFile(Post p)
         getline(ss, title, ',');
         getline(ss, desc, ',');
         getline(ss, username, ',');
-        getline(ss, topic, ':');
+        getline(ss, topic, ',');
         if (title == p.getPostTitle() && desc == p.getDescription() && username == p.getUser() && topic == p.getTopic()) {
             // If the line is the post that needs to be updated, replace it with the updated post
             line = p.toString();
@@ -218,9 +218,9 @@ List<Post> Post::readTextFileByTopic(string topicName)
         getline(ss, title, ',');
         getline(ss, desc, ',');
         getline(ss, username, ',');
-        getline(ss, topic, ':');
-        getline(ss, reply, '.');
-        getline(ss, likes, '.');
+        getline(ss, topic, ',');
+        getline(ss, reply, ',');
+        getline(ss, likes, ',');
         vector<string> stack = split(reply, ':');
         for (auto i : stack) {
             Reply r(i);
@@ -243,9 +243,12 @@ vector<string> Post::split(const string& s, char delim) {
     vector<string> result;
     stringstream ss(s);
     string item;
-
     while (getline(ss, item, delim)) {
         result.push_back(item);
+    }
+
+    if (ss) {
+        result.push_back(ss.str());
     }
 
     return result;
@@ -253,19 +256,19 @@ vector<string> Post::split(const string& s, char delim) {
 
 string Post::toString()
 {
-    string line = title + "," + description + "," + username + "," + topic;
+    string line = title + "," + description + "," + username + "," + topic + ",";
     Stack<Reply> replyList = replies.inverseStack();
     List<Reply> newlist = replyList.toList();
     cout << newlist.getLength() << endl;
     int i = 0;
-    for (i; i < newlist.getLength(); i++) {
-        line += ":" + newlist.get(i).getReply();
+    if (newlist.getLength() > 0) {
+        for (i; i < newlist.getLength(); i++) {
+            line += newlist.get(i).getReply() + ":";
+        }
     }
-    if (i == 0) {
-        line += ":";
-    }
+    line += ",";
     for (int r = 0; r < likeList.getLength(); r++) {
-        line += "." + likeList.get(r);
+        line += likeList.get(r) + ".";
     }
 
     return line;

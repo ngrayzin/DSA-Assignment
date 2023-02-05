@@ -64,7 +64,7 @@ int main()
                 cin >> topicName;
                 Topic t(topicName, postList);
                 topicDict.add(topicName, postList);
-                t.saveToTextFile();
+                //t.saveToTextFile();
             }
             else if (option == 3) {
                 string topicName;
@@ -81,9 +81,8 @@ int main()
                     Stack<Reply> s = Stack<Reply>();
                     List<string> l = List<string>();
                     Post p = Post(title, desc, currentUser.getName(), topicName, l, s);
-                    topicDict.get(topicName).add(p);
+                    topicDict.getAddress(topicName).add(p);
                     p.saveToTextFile();
-                    cout << topicDict.get(topicName).getLength() << endl;
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
@@ -111,9 +110,10 @@ int main()
                         cin >> seePost;
                         if (i >= seePost && 0 < seePost) {
                             Post p = list.getAddress(seePost - 1);
+                            Post& real = p;
                             int detailOption = 1;
                             while (detailOption != 3) {
-                                postDetails(p, seePost);
+                                postDetails(real, seePost);
                                 cout << "Enter option: ";
                                 cin >> detailOption;
                                 if (detailOption == 1) {
@@ -123,14 +123,14 @@ int main()
                                     string replyMsg;
                                     cout << "Enter your message: ";
                                     cin >> replyMsg;
-                                    p.addReply(replyMsg);
+                                    real.addReply(replyMsg);
                                     cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
-                                    p.printReplies();
+                                    real.printReplies();
                                     cout << endl;
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
-                                    p.updateTextFile(p);
+                                    real.updateTextFile(real);
                                     topicDict = loadTopic();
                                 }
                                 else {
