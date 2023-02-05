@@ -18,7 +18,7 @@ Dictionary<List<Post>> loadTopic();
 void displayMenu();
 void login();
 void printPost(Post post);
-void postDetails(Post post, int i, List<string> likeList);
+void postDetails(Post post, int i);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 void deleteAndEditOption();
@@ -88,7 +88,7 @@ int main()
                 cin >> topicName;
                 Topic t(topicName, postList);
                 topicDict.add(topicName, postList);
-                t.saveToTextFile();
+                //t.saveToTextFile();
             }
             else if (option == 3) {
                 string topicName;
@@ -105,9 +105,8 @@ int main()
                     Stack<Reply> s = Stack<Reply>();
                     List<string> l = List<string>();
                     Post p = Post(title, desc, currentUser.getName(), topicName, l, s);
-                    topicDict.get(topicName).add(p);
+                    topicDict.getAddress(topicName).add(p);
                     p.saveToTextFile();
-                    cout << topicDict.get(topicName).getLength() << endl;
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
@@ -120,7 +119,7 @@ int main()
                 cout << "Type the topic name that you would like to browse: ";
                 cin >> topicName;
                 if (topicDict.contain(topicName)) {
-                    List<Post> list = topicDict.get(topicName);
+                    List<Post> list = topicDict.getAddress(topicName);
                     int i = 0;
                     cout << list.getLength() << endl;
                     for (i; i < list.getLength();i++) {
@@ -134,32 +133,33 @@ int main()
                         int seePost;
                         cout << "Which post number you want to see: ";
                         cin >> seePost;
-                        if (i >= seePost && 0 <= seePost) {
-                            Post p = list.get(seePost - 1);
-                            List<string> list = p.getLikeList();
+                        if (i >= seePost && 0 < seePost) {
+                            Post p = list.getAddress(seePost - 1);
+                            Post& real = p;
                             int detailOption = 1;
                             while (detailOption != 3) {
-                                postDetails(p, seePost, list);
+                                postDetails(real, seePost);
                                 cout << "Enter option: ";
                                 cin >> detailOption;
                                 if (detailOption == 1) {
-                                    List<string>& likeList = list;
-                                    if (likeList.contain(currentUser.getName())) {
-                                        //likeList.remove(currentUser.getName()); //unlike post :(
-                                    }
-                                    else {
-                                        likeList.add(currentUser.getName());//like post :3
-                                        likeList.saveToTextFile(p.getPostTitle(), p.getDescription(), p.getUser(), p.getTopic());
-                                    }
+                                    p.addLikes(currentUser.getName());
                                 }
                                 else if (detailOption == 2) {
                                     string replyMsg;
                                     cout << "Enter your message: ";
                                     cin >> replyMsg;
-                                    p.addReply(replyMsg);
+                                    real.addReply(replyMsg);
+                                    cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
+                                    real.printReplies();
+                                    cout << endl;
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
+                                    real.updateTextFile(real);
+                                    topicDict = loadTopic();
+                                }
+                                else {
+                                    cout << "invalid" << endl;
                                 }
                             }
                         }
@@ -267,7 +267,7 @@ void printPost(Post post) {
     cout << "\n";
 }
 
-void postDetails(Post post, int i, List<string> likeList) {
+void postDetails(Post post, int i) {
     cout << "Post " << i << endl;
     cout << "+----------+-----------+" << endl;
     cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
@@ -278,14 +278,14 @@ void postDetails(Post post, int i, List<string> likeList) {
     cout << "+----------------------+" << endl;
     cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
     cout << "+----------+-----------+" << endl;
-    cout << "Likes: " << likeList.getLength() << endl;
+    cout << "Likes: " << post.getLikeList().getLength() << endl;
     cout << "Comments: " << post.getReplies().getLength() << endl;
     cout << "\n";
     cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
     post.printReplies();
     cout << endl;
     cout << "------------------------" << endl;
-    if (likeList.contain(currentUser.getName())) {
+    if (post.getLikeList().contain(currentUser.getName())) {
         cout << "[1] Unlike Post "  << i << endl;
         cout << "[2] Comment Post " << i << endl;
         cout << "[3] Back to browse" << endl;

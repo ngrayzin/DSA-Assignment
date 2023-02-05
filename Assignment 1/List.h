@@ -57,6 +57,12 @@ public:
 	// return the item in the specified index of the list
 	ItemType get(int index);
 
+	// get an item at a specified position of the list (retrieve)
+	// pre : 0 <= index < size
+	// post: none
+	// return the item in the specified index of the list
+	ItemType& getAddress(int index);
+
 	// See if this item is in the list
 	// pre : none
 	// post: none
@@ -79,8 +85,6 @@ public:
 
 	// display the items in the list
 	void print();
-
-	void saveToTextFile(string postTitle, string desc, string un, string topic);
 
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
@@ -242,6 +246,23 @@ ItemType List<ItemType>::get(int index)
 	return ItemType();
 }
 
+template<typename ItemType>
+inline ItemType& List<ItemType>::getAddress(int index)
+{
+	// If index is valid
+	if (index < size && index >= 0) {
+		// Traverse the list to the index
+		Node* current = firstNode;
+		for (int i = 0; i <= (index - 1); i++)
+			if (current->next != NULL) {
+				current = current->next;
+			}
+
+		// Return the item contained in the node
+		return current->item;
+	}
+}
+
 
 template<typename ItemType>
 bool List<ItemType>::contain(ItemType item)
@@ -280,36 +301,5 @@ void List<ItemType>::print()
         cout << current->item << endl;
         current = current->next;
     }
-}
-
-template<typename ItemType>
-void List<ItemType>::saveToTextFile(string postTitle, string d, string un, string t)
-{
-	ifstream ifile("posts.txt", ios::in);
-	vector<string> lines;
-	string line;
-	while (getline(ifile, line)) {
-		stringstream ss(line);
-		string title, desc, username, topic;
-		getline(ss, title, ',');
-		getline(ss, desc, ',');
-		getline(ss, username, ',');
-		getline(ss, topic, ',');
-		if (title == postTitle && desc == d && username == un && topic == t) {
-			line += ",";
-			Node* current = firstNode;
-			while (current != nullptr) {
-				line += current->item;
-				current = current->next;
-			}
-		}
-		lines.push_back(line);
-	}
-	ifile.close();
-
-	ofstream file("posts.txt", ios::out);
-	for (auto& l : lines)
-		file << l << endl;
-	file.close();
 }
 
