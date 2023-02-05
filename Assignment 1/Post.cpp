@@ -185,3 +185,52 @@ void Post::printReplies(int count,Stack<Reply> replyList) {
     replyList.push(r);
 }
 
+List<Post> Post::returnPostListByUser(User user)
+{
+    ifstream file("posts.txt");
+    string line;
+    int count = 0;
+    List<Post> userPostList;
+    while (getline(file, line)) {
+        List<string> likeList = List<string>();
+        Stack<Reply> replyStack = Stack<Reply>();
+        stringstream ss(line);
+        string title, desc, username, topic;
+        getline(ss, title, ',');
+        getline(ss, desc, ',');
+        getline(ss, username, ',');
+        getline(ss, topic, ',');
+        if (user.getName() == username) {
+            cout << "\n";
+            cout << "Post " << count + 1 << endl;
+            cout << "+----------+-----------+" << endl;
+            cout << "| username | " << setw(10) << username << "|" << endl;
+            cout << "+----------+-----------+" << endl;
+            cout << "| Topic    | " << setw(10) << topic << "|" << endl;
+            cout << "+----------+-----------+" << endl;
+            cout << "| Title    | " << setw(10) << title << "|" << endl;
+            cout << "+----------------------+" << endl;
+            cout << "| Content  | " << setw(10) << desc << "|" << endl;
+            cout << "+----------+-----------+" << endl;
+            cout << "\n";
+            count++;
+            Post p(title, desc, username, topic, likeList, replyStack);
+            userPostList.add(p);
+        }
+    }
+    file.close();
+    if (count == 0) {
+        cout << "You have not post yet." << endl;
+    }
+    return userPostList;
+
+}
+
+bool Post::operator==(const Post& rhs) {
+    cout << title << topic << endl;
+    cout << rhs.title << topic << endl;
+    bool f = title == rhs.title;
+    cout << f << endl;
+    return (title == rhs.title);
+}
+

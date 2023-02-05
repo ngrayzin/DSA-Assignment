@@ -21,6 +21,7 @@ void printPost(Post post);
 void postDetails(Post post, int i, List<string> likeList);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
+void deleteAndEditOption();
 
 static bool loggedIn = false;
 User currentUser;
@@ -55,7 +56,30 @@ int main()
             cin >> option;
             if (option == 1) {
                 Post p;
-                p.readTextFileByUser(currentUser);
+                int userPostOption;
+                //p.readTextFileByUser(currentUser);
+                List<Post> pList = p.returnPostListByUser(currentUser);
+                cout << endl;
+                deleteAndEditOption(); //Prints the option list
+                cin >> userPostOption;
+                if (userPostOption == 1) { //Editing Post
+
+                }
+                if (userPostOption == 2) { //Deleting post
+                    int deletePost;
+                    cout << "Enter post number you want to delete: ";
+                    cin >> deletePost;
+                    Post p = pList.get(deletePost - 1);
+                    cout << p.getPostTitle() << endl;
+                    List<Post> test = topicDict.get(p.getTopic()); //Returns list of post 
+                    test.remove(p);
+
+                }
+                else {
+
+                }
+
+
             }
             else if (option == 2) {
                 string topicName;
@@ -98,6 +122,7 @@ int main()
                 if (topicDict.contain(topicName)) {
                     List<Post> list = topicDict.get(topicName);
                     int i = 0;
+                    cout << list.getLength() << endl;
                     for (i; i < list.getLength();i++) {
                         cout << "Post " << i + 1 << endl;
                         printPost(list.get(i));
@@ -120,7 +145,7 @@ int main()
                                 if (detailOption == 1) {
                                     List<string>& likeList = list;
                                     if (likeList.contain(currentUser.getName())) {
-                                        likeList.remove(currentUser.getName()); //unlike post :(
+                                        //likeList.remove(currentUser.getName()); //unlike post :(
                                     }
                                     else {
                                         likeList.add(currentUser.getName());//like post :3
@@ -132,9 +157,6 @@ int main()
                                     cout << "Enter your message: ";
                                     cin >> replyMsg;
                                     p.addReply(replyMsg);
-                                    cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
-                                    p.printReplies();
-                                    cout << endl;
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
@@ -151,7 +173,8 @@ int main()
                 }
             }
             else if (option == 5) {
-                
+                List<Post> p = topicDict.get("list");
+                cout << p.getLength() << endl; 
             }
             else if (option == 6) {
                 loggedIn = false;
@@ -315,4 +338,11 @@ void userSignUp(Dictionary<string> userData)
         cout << "oops something went wrong" << endl;
     }
    
+}
+
+void deleteAndEditOption() {
+    cout << "[1] Edit Post " << endl;
+    cout << "[2] Delete Post " << endl;
+    cout << "[3] Back to browse" << endl;
+    cout << "Enter option: ";
 }

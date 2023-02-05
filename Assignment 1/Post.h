@@ -38,5 +38,6 @@ public:
 	void printReplies();
 	void printReplies(int count,Stack<Reply> replyList);
 	Stack<Reply> getReplies();
-
+	List<Post> returnPostListByUser(User user);
+	bool operator==(const Post &rhs);
 };

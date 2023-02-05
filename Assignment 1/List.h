@@ -49,7 +49,7 @@ public:
 	// post: item is removed the specified position in the list
 	//       items after the position are shifted forward by 1 position
 	//       size of list is decreased by 1
-	void remove(ItemType item);
+	bool remove(ItemType& item);
 
 	// get an item at a specified position of the list (retrieve)
 	// pre : 0 <= index < size
@@ -182,21 +182,45 @@ void List<ItemType>::remove(int index)
 }
 
 template <typename ItemType>
-void List<ItemType>::remove(ItemType item)
+bool List<ItemType>::remove(ItemType& item)
 {
 	Node* current = firstNode;
-	for (int i = 0;i < size - 1;i++) {
-		if (current->item == item) {
-			if (current == firstNode) {
-				firstNode = firstNode->next;
-			}
-			else {
-				current->next = current->next->next;
-			}
+	Node* prev = firstNode;
+	if (firstNode->item == item) {
+		if (firstNode->next != NULL) {
+			firstNode = firstNode->next;
+			return true;
 		}
-		current = current->next;
+		else {
+			firstNode = NULL;
+			return true;
+		}
 	}
-	size--;
+	else {
+		while (current != NULL) {
+			prev = current;
+			current = current->next;
+			if (current->item == item) {
+				if (current->next != NULL) {
+					prev->next = current->next;
+					current = NULL;
+					delete current;
+					size -= 1;
+					return true;
+				}
+				else {
+					prev->next = NULL;
+					current = NULL;
+					delete current;
+					size -= 1;
+					cout << size << endl;
+					return true;
+				}
+			}
+
+		}
+	}
+	return false;
 }
 
 template <typename ItemType>
@@ -288,3 +312,4 @@ void List<ItemType>::saveToTextFile(string postTitle, string d, string un, strin
 		file << l << endl;
 	file.close();
 }
+

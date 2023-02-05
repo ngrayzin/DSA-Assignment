@@ -196,6 +196,7 @@ bool Dictionary<ItemType>::add(KeyType newKey, ItemType newItem)
 template <typename ItemType>
 void Dictionary<ItemType>::remove(KeyType key)
 {
+    cout << "Dict Remove" << endl;
     int index = hash(key);
 
     Node* item = items[index];
