@@ -69,6 +69,12 @@ public:
 	// return true if the item is in the list; otherwise returns false
 	bool contain(ItemType item);
 
+	// See if this item is in the list and return the item
+	// pre : 0 <= index < size
+	// post: none
+	// return the item if the item is in the list; otherwise returns noting
+	ItemType search(ItemType item);
+
 	// check if the list is empty
 	// pre : none
 	// post: none
@@ -193,10 +199,12 @@ bool List<ItemType>::remove(ItemType& item)
 	if (firstNode->item == item) {
 		if (firstNode->next != NULL) {
 			firstNode = firstNode->next;
+			size--;
 			return true;
 		}
 		else {
 			firstNode = NULL;
+			size--;
 			return true;
 		}
 	}
@@ -209,14 +217,14 @@ bool List<ItemType>::remove(ItemType& item)
 					prev->next = current->next;
 					current = NULL;
 					delete current;
-					size -= 1;
+					size--;
 					return true;
 				}
 				else {
 					prev->next = NULL;
 					current = NULL;
 					delete current;
-					size -= 1;
+					size--;
 					cout << size << endl;
 					return true;
 				}
@@ -277,6 +285,21 @@ bool List<ItemType>::contain(ItemType item)
 		}
 	}
 	return false;
+}
+
+template<typename ItemType>
+ItemType List<ItemType>::search(ItemType item)
+{
+	Node* current = firstNode;
+	for (int i = 0; i <= size - 1; i++) {
+		if (current->item == item) {
+			return current->item;
+		}
+		if (current->next != NULL) {
+			current = current->next;
+		}
+	}
+	return ItemType();
 }
 
 template <typename ItemType>
