@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include "List.h"
 using namespace std;
 
 template <typename ItemType>
@@ -28,7 +29,7 @@ public:
 	void clear(Stack<ItemType>& s);
 	ItemType top();
 	int getLength();
-	void saveToTextFile(string postTitle, string d, string un, string t);
+	List<ItemType> toList();
 };
 
 template <typename ItemType>
@@ -131,39 +132,6 @@ void Stack<ItemType>::clear(Stack<ItemType>& s) {
 }
 
 template <typename ItemType>
-void Stack<ItemType>::saveToTextFile(string postTitle, string d, string un, string t)
-{
-	ifstream ifile("posts.txt", ios::in);
-	vector<string> lines;
-	string line;
-	while (getline(ifile, line)) {
-		stringstream ss(line);
-		string title, desc, username, topic;
-		getline(ss, title, ',');
-		getline(ss, desc, ',');
-		getline(ss, username, ',');
-		getline(ss, topic, ',');
-		if (title == postTitle && desc == d && username == un && topic == t) {
-			line += ",";
-			if (topNode != NULL) {
-				Node* current = topNode;
-				while (current != NULL) {
-					line += current->item;
-					current = current->next;
-				}
-			}
-		}
-		lines.push_back(line);
-	}
-	ifile.close();
-
-	ofstream file("posts.txt", ios::out);
-	for (auto& l : lines)
-		file << l << endl;
-	file.close();
-}
-
-template <typename ItemType>
 int Stack<ItemType>::getLength() {
 	int count = 0;
 	Node* curr = topNode;
@@ -177,4 +145,16 @@ int Stack<ItemType>::getLength() {
 template <typename ItemType>
 ItemType Stack<ItemType>::top() {
 	return topNode->item;
+}
+
+
+template <typename ItemType>
+List<ItemType> Stack<ItemType>::toList() {
+	List<ItemType> list = List<ItemType>();
+	Node* curr = topNode;
+	while(curr != NULL) {
+		list.add(curr->item);
+		curr = curr->next;
+	}
+	return list;
 }

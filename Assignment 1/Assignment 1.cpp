@@ -18,7 +18,7 @@ Dictionary<List<Post>> loadTopic();
 void displayMenu();
 void login();
 void printPost(Post post);
-void postDetails(Post post, int i, List<string> likeList);
+void postDetails(Post post, int i);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 
@@ -96,7 +96,7 @@ int main()
                 cout << "Type the topic name that you would like to browse: ";
                 cin >> topicName;
                 if (topicDict.contain(topicName)) {
-                    List<Post> list = topicDict.get(topicName);
+                    List<Post> list = topicDict.getAddress(topicName);
                     int i = 0;
                     for (i; i < list.getLength();i++) {
                         cout << "Post " << i + 1 << endl;
@@ -109,23 +109,15 @@ int main()
                         int seePost;
                         cout << "Which post number you want to see: ";
                         cin >> seePost;
-                        if (i >= seePost && 0 <= seePost) {
-                            Post p = list.get(seePost - 1);
-                            List<string> list = p.getLikeList();
+                        if (i >= seePost && 0 < seePost) {
+                            Post p = list.getAddress(seePost - 1);
                             int detailOption = 1;
                             while (detailOption != 3) {
-                                postDetails(p, seePost, list);
+                                postDetails(p, seePost);
                                 cout << "Enter option: ";
                                 cin >> detailOption;
                                 if (detailOption == 1) {
-                                    List<string>& likeList = list;
-                                    if (likeList.contain(currentUser.getName())) {
-                                        likeList.remove(currentUser.getName()); //unlike post :(
-                                    }
-                                    else {
-                                        likeList.add(currentUser.getName());//like post :3
-                                        likeList.saveToTextFile(p.getPostTitle(), p.getDescription(), p.getUser(), p.getTopic());
-                                    }
+                                    p.addLikes(currentUser.getName());
                                 }
                                 else if (detailOption == 2) {
                                     string replyMsg;
@@ -138,6 +130,11 @@ int main()
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
+                                    p.updateTextFile(p);
+                                    topicDict = loadTopic();
+                                }
+                                else {
+                                    cout << "invalid" << endl;
                                 }
                             }
                         }
@@ -244,7 +241,7 @@ void printPost(Post post) {
     cout << "\n";
 }
 
-void postDetails(Post post, int i, List<string> likeList) {
+void postDetails(Post post, int i) {
     cout << "Post " << i << endl;
     cout << "+----------+-----------+" << endl;
     cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
@@ -255,14 +252,14 @@ void postDetails(Post post, int i, List<string> likeList) {
     cout << "+----------------------+" << endl;
     cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
     cout << "+----------+-----------+" << endl;
-    cout << "Likes: " << likeList.getLength() << endl;
+    cout << "Likes: " << post.getLikeList().getLength() << endl;
     cout << "Comments: " << post.getReplies().getLength() << endl;
     cout << "\n";
     cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
     post.printReplies();
     cout << endl;
     cout << "------------------------" << endl;
-    if (likeList.contain(currentUser.getName())) {
+    if (post.getLikeList().contain(currentUser.getName())) {
         cout << "[1] Unlike Post "  << i << endl;
         cout << "[2] Comment Post " << i << endl;
         cout << "[3] Back to browse" << endl;

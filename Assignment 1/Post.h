@@ -30,6 +30,7 @@ public:
 	string getTopic();
 	void saveToTextFile();
 	void setLikeList(List<string> likeList);
+	void addLikes(string name);
 	List<string> getLikeList();
 	void readTextFileByUser(User user);
 	List<Post> readTextFileByTopic(string topicName);
@@ -38,5 +39,7 @@ public:
 	void printReplies();
 	void printReplies(int count,Stack<Reply> replyList);
 	Stack<Reply> getReplies();
-
+	void updateTextFile(Post p);
+	vector<string> split(const string& s, char delim);
+	string toString();
 };
