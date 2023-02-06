@@ -49,7 +49,7 @@ public:
 	// post: item is removed the specified position in the list
 	//       items after the position are shifted forward by 1 position
 	//       size of list is decreased by 1
-	bool remove(ItemType& item);
+	bool remove(ItemType item);
 
 	// get an item at a specified position of the list (retrieve)
 	// pre : 0 <= index < size
@@ -61,7 +61,7 @@ public:
 	// pre : 0 <= index < size
 	// post: none
 	// return the item in the specified index of the list
-	ItemType& getAddress(int index);
+	ItemType* getAddress(int index);
 
 	// See if this item is in the list
 	// pre : none
@@ -192,7 +192,7 @@ void List<ItemType>::remove(int index)
 }
 
 template <typename ItemType>
-bool List<ItemType>::remove(ItemType& item)
+bool List<ItemType>::remove(ItemType item)
 {
 	Node* current = firstNode;
 	Node* prev = firstNode;
@@ -255,7 +255,7 @@ ItemType List<ItemType>::get(int index)
 }
 
 template<typename ItemType>
-inline ItemType& List<ItemType>::getAddress(int index)
+ItemType* List<ItemType>::getAddress(int index)
 {
 	// If index is valid
 	if (index < size && index >= 0) {
@@ -267,8 +267,9 @@ inline ItemType& List<ItemType>::getAddress(int index)
 			}
 
 		// Return the item contained in the node
-		return current->item;
+		return &current->item;
 	}
+	return nullptr;
 }
 
 

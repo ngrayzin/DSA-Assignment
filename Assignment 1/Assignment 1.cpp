@@ -32,7 +32,7 @@ int main()
     Dictionary<string> userData = loadInfo();
     Dictionary<List<Post>> topicDict = loadTopic();
     List<Post> currentList;
-    Post p;
+    Post* p;
     int option = 1;
     while (option != 0)
     {
@@ -67,12 +67,12 @@ int main()
                     int OptionChoice;
                     cout << "Enter post number you want to delete/edit: ";
                     cin >> editOrDeleteOption;
-                    Post p = pList.get(editOrDeleteOption - 1);
-                    List<Post> userPostList = topicDict.get(p.getTopic());
+                    Post* p = currentList.getAddress(editOrDeleteOption - 1);
+                    List<Post> userPostList = topicDict.get(p->getTopic());
                     cout << UNDERLINE << "Enter what you want to do to this post: " << CLOSEUNDERLINE << endl << "[1] Edit Post's Description" << endl << "[2] Delete Post" << endl << "Enter Option: ";
                     cin >> OptionChoice;
                     if (OptionChoice == 1) {
-                        string description = p.getDescription(); //Getting current description
+                        string description = p->getDescription(); //Getting current description
                         int editChoice = true;
                         Stack<char> charStack;
                         for (int x = description.size(); x >= 0; x--) {//Splits the string description into char and adds it into new char stack
@@ -128,7 +128,7 @@ int main()
                                     newDescription += charStack.top();
                                     charStack.pop();
                                 }
-                                p.setDescription(newDescription); //Sets new description
+                                p->setDescription(newDescription); //Sets new description
                                 editChoice = false;
                             }
                             else {
@@ -137,7 +137,7 @@ int main()
                         }
                     }
                     else if (OptionChoice == 2) {
-                        userPostList.remove(p);
+                        userPostList.remove(*p);
                     }
                     else {
                         cout << "F";
@@ -205,23 +205,23 @@ int main()
                         cout << "Which post number you want to see: ";
                         cin >> seePost;
                         if (i >= seePost && 0 < seePost) {
-                            p = currentList.get(seePost - 1);
+                            p = currentList.getAddress(seePost - 1);
                             int detailOption = 1;
                             while (detailOption != 3) {
                                 cout << "\n";
-                                postDetails(p, seePost);
+                                postDetails(*p, seePost);
                                 cout << "Enter option: ";
                                 cin >> detailOption;
                                 if (detailOption == 1) {
-                                    p.addLikes(currentUser.getName());
+                                    p->addLikes(currentUser.getName());
                                 }
                                 else if (detailOption == 2) {
                                     string replyMsg;
                                     cout << "Enter your message: ";
                                     cin >> replyMsg;
-                                    p.addReply(replyMsg);
+                                    p->addReply(replyMsg);
                                     cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
-                                    p.printReplies();
+                                    p->printReplies();
                                     cout << endl;
                                 }
                                 else if (detailOption == 3) {
