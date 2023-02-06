@@ -77,10 +77,11 @@ void Post::addLikes(string name)
     }
 }
 
-List<string> Post::getLikeList()
+List<string>* Post::getLikeList()
 {
-    return likeList;
+    return &likeList;
 }
+
 
 void Post::addReply(string msg) {
     Reply newReply(msg);
@@ -91,11 +92,6 @@ void Post::addReply(string msg) {
 void Post::setReplies(Stack<Reply> replyStack)
 {
     replies = replyStack;
-}
-
-Stack<Reply> Post::getReplies()
-{
-    return replies;
 }
 
 void Post::printReplies() {
@@ -113,6 +109,11 @@ void Post::printReplies(int count,Stack<Reply> replyList) {
     cout << "[" << count << "] " << r.getReply() << endl;
     printReplies(count+1,replyList);
     replyList.push(r);
+}
+
+Stack<Reply> *Post::getReplies()
+{
+    return &replies;
 }
 
 void Post::saveToTextFile()

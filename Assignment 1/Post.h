@@ -31,14 +31,14 @@ public:
 	void saveToTextFile();
 	void setLikeList(List<string> likeList);
 	void addLikes(string name);
-	List<string> getLikeList();
+	List<string> *getLikeList();
 	void readTextFileByUser(User user);
 	List<Post> readTextFileByTopic(string topicName);
 	void addReply(string replyMsg);
 	void setReplies(Stack<Reply> replyStack);
 	void printReplies();
 	void printReplies(int count,Stack<Reply> replyList);
-	Stack<Reply> getReplies();
+	Stack<Reply> *getReplies();
 	List<Post> returnPostListByUser(User user);
 	bool operator==(const Post& rhs);
 	void updateTextFile(Post p);
