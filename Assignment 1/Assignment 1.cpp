@@ -63,23 +63,87 @@ int main()
                 deleteAndEditOption(); //Prints the option list
                 cin >> userPostOption;
                 if (userPostOption == 1) { //Editing Post
+                    int editOrDeleteOption;
+                    int OptionChoice;
+                    cout << "Enter post number you want to delete/edit: ";
+                    cin >> editOrDeleteOption;
+                    Post p = pList.get(editOrDeleteOption - 1);
+                    List<Post> userPostList = topicDict.get(p.getTopic());
+                    cout << UNDERLINE << "Enter what you want to do to this post: " << CLOSEUNDERLINE << endl << "[1] Edit Post's Description" << endl << "[2] Delete Post" << endl << "Enter Option: ";
+                    cin >> OptionChoice;
+                    if (OptionChoice == 1) {
+                        string description = p.getDescription(); //Getting current description
+                        int editChoice = true;
+                        Stack<char> charStack;
+                        for (int x = description.size(); x >= 0; x--) {//Splits the string description into char and adds it into new char stack
+                            cout << description[x] << endl;
+                            charStack.push(description[x]);
+                        }
+                        cout << charStack.top() << endl;
+                        charStack = charStack.inverseStack();
+                        charStack.pop(); //Removes additional white space that came when changing the string into char
+                        cout << charStack.top() << endl;
+                        //charStack.
+                        while (editChoice) {
+                            cout << "Current description: ";
+                            charStack.printInversed(charStack);
+                            cout << endl;
+                            cout << "[1] Add to description" << endl;
+                            cout << "[2] Delete some characters" << endl;
+                            cout << "[3] Done editing" << endl;
+                            cout << "Option: ";
+                            cin >> editChoice;
+                            if (editChoice == 1) {
+                                string additionalWords;
+                                charStack.printInversed(charStack);
+                                cin.ignore(numeric_limits<streamsize>::max(), '\n'); //Allows for spacing
+                                getline(cin, additionalWords);
+                                for (int i = 0; i < additionalWords.size(); i++) {//Splits the string input into char and adds it into new char stack
+                                    charStack.push(additionalWords[i]);
+                                }
+                                charStack.printInversed(charStack);
+                                cout << endl;
+                            }
+                            else if (editChoice == 2) {
+                                int undoChoice = 1;
+                                while (undoChoice == 1) {
+                                    cout << "Current description: ";
+                                    charStack.printInversed(charStack);
+                                    cout << endl;
+                                    cout << "[1] Undo" << endl << "[0] Quit: " << endl << "Option: ";
+                                    cin >> undoChoice;
+                                    if (undoChoice == 0) {
+                                        break;
+                                    }
+                                    else if (undoChoice == 1) { //Removes the char when user wants to undo
+                                        charStack.pop();
+                                    }
+                                }
+                            }
+                            else if (editChoice == 3) {
+                                string newDescription = "";
+                                int charStackLength = charStack.getLength();
+                                charStack = charStack.inverseStack();
+                                for (int c = 0; c < charStackLength; c++) { //Gets all the char from the stack and adds it into a string
+                                    newDescription += charStack.top();
+                                    charStack.pop();
+                                }
+                                p.setDescription(newDescription); //Sets new description
+                                editChoice = false;
+                            }
+                            else {
+                                cout << "Enter a valid option" << endl;
+                            }
+                        }
+                    }
+                    else if (OptionChoice == 2) {
+                        userPostList.remove(p);
+                    }
+                    else {
+                        cout << "F";
+                    }
 
                 }
-                if (userPostOption == 2) { //Deleting post
-                    int deletePost;
-                    cout << "Enter post number you want to delete: ";
-                    cin >> deletePost;
-                    Post p = currentList.get(deletePost - 1);
-                    cout << p.getPostTitle() << endl;
-                    List<Post> test = topicDict.get(p.getTopic()); //Returns list of post 
-                    test.remove(p);
-
-                }
-                else {
-
-                }
-
-
             }
             else if (option == 2) {
                 string topicName;
@@ -204,7 +268,7 @@ Dictionary<string> loadInfo() {
     ifstream file("users.txt");
     string line;
 
-    while (getline(file, line)) {
+    while(getline(file, line)) {
         stringstream ss(line);
         string name, password, post;
         getline(ss, name, ',');
@@ -349,8 +413,7 @@ void userSignUp(Dictionary<string> userData)
 }
 
 void deleteAndEditOption() {
-    cout << "[1] Edit Post " << endl;
-    cout << "[2] Delete Post " << endl;
-    cout << "[3] Back to browse" << endl;
+    cout << "[1] Edit/Delete Post" << endl;
+    cout << "[2] Back to browse" << endl;
     cout << "Enter option: ";
 }
