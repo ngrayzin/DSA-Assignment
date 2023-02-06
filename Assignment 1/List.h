@@ -87,6 +87,8 @@ public:
 	// return the number of items in the list
 	int getLength();
 
+	ItemType* getPost(string userName, string title);
+
 	//------------------- Other useful functions -----------------
 
 	// display the items in the list
@@ -104,15 +106,18 @@ List<ItemType>::List() {
 
 template <typename ItemType>
 List<ItemType>::~List() {
-	//Node* temp = firstNode;
-	//while (temp != NULL)
-	//{
-	//	firstNode = firstNode->next;
-	//	temp->next = NULL;
-	//	delete temp;
-	//	temp = firstNode;
-	//}
-	//size = 0;
+	while (firstNode != NULL) {
+		Node* remove;
+		if (firstNode->next != NULL) {
+			remove = firstNode;
+			firstNode = firstNode->next;
+			remove = NULL;
+			delete remove;
+		}
+		else {
+			firstNode = NULL;
+		}
+	}
 }
 
 template <typename ItemType>
@@ -226,7 +231,6 @@ bool List<ItemType>::remove(ItemType item)
 					current = NULL;
 					delete current;
 					size--;
-					cout << size << endl;
 					return true;
 				}
 			}
@@ -240,7 +244,7 @@ template <typename ItemType>
 ItemType List<ItemType>::get(int index)
 {
 	// If index is valid
-	if (index < size && index >= 0) {
+	if (index <= size && index >= 0) {
 		// Traverse the list to the index
 		Node* current = firstNode;
 		for (int i = 0; i <= (index - 1); i++)
@@ -259,7 +263,7 @@ template<typename ItemType>
 ItemType* List<ItemType>::getAddress(int index)
 {
 	// If index is valid
-	if (index < size && index >= 0) {
+	if (index <= size && index >= 0) {
 		// Traverse the list to the index
 		Node* current = firstNode;
 		for (int i = 0; i <= (index - 1); i++)
@@ -328,3 +332,13 @@ void List<ItemType>::print()
     }
 }
 
+template<typename ItemType>
+ItemType* List<ItemType>::getPost(string userName, string title) {
+	Node* current = firstNode;
+	while (current != NULL) {
+		if (current->item.getUser() == userName && current->item.getPostTitle() == title) {
+			return &(current->item);
+		}
+		current = current->next;
+	}
+}
