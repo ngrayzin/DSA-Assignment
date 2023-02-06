@@ -1,3 +1,14 @@
+/**
+* Group: 7
+* -----------------------------------
+* Name Member 1:         Low Hong Wei
+* Student ID Member 1:   S10203927J
+* 
+* Name Member 2:         Ng Ray Zin
+* Student ID Member 2:   S10222457
+* ------------------------------------
+*/
+
 #include<string>
 #include<iostream>
 #include <sstream>
@@ -13,6 +24,7 @@
 #define CLOSEUNDERLINE "\033[0m"
 using namespace std;
 
+//Explanation of functions below
 Dictionary<string> loadInfo();
 Dictionary<List<Post>> loadTopic();
 void displayMenu();
@@ -23,6 +35,7 @@ void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 void deleteAndEditOption();
 void printSticky(int length, List<Post> p, int& count);
+void printStickyByUser(int length, List<Post> p, int& count);
 void wrapText(const string& text, int width);
 static bool loggedIn = false;
 User currentUser;
@@ -30,11 +43,11 @@ User currentUser;
 
 int main()
 {
-    Dictionary<string> userData = loadInfo();
-    Dictionary<List<Post>> topicDict = loadTopic();
-    List<Post>* currentList;
-    List<Post>* pointerList;
-    Post* p;
+    Dictionary<string> userData = loadInfo(); //Rayzin Help input here
+    Dictionary<List<Post>> topicDict = loadTopic(); //Rayzin Help input here
+    List<Post>* currentList; //A pointer post list
+    List<Post>* pointerList; //A pointer post list
+    Post* p; //Post pointer used to edit the chosen post
     int option = 1;
     while (option != 0)
     {
@@ -58,36 +71,27 @@ int main()
             //show main page
             displayMenu();
             cin >> option;
-            if (option == 1) {
+            if (option == 1) { //View Your Posts
                 int userPostOption;
                 cout << "List of available topics:" << endl;
-                topicDict.print();
+                topicDict.print(); //Prints out the different topics inside the hash table
                 string userTopicName;
                 cout << "Type the topic name that you would like to browse: ";
                 cin >> userTopicName;
-                if (topicDict.contain(userTopicName)) {
-                    currentList = topicDict.get(userTopicName);
-                    int i = 0;
-                    int userPostCount = 0;
-                    int currentListLength = currentList->getLength();
-                    printSticky(currentListLength, *currentList,userPostCount);
-                    /*for (i; i < currentListLength; i++) {
-                        if (currentList->get(i).getUser() == currentUser.getName()) {
-                            userPostCount++;
-                            cout << "Post " << i + 1 << endl;
-                            printPost(currentList->get(i));
-                        }
-                    }*/
-                    cout << userPostCount << endl;
-                    if (userPostCount == 0) {
+                if (topicDict.contain(userTopicName)) {//Checks if the hash table has the specified topic entered by the user
+                    currentList = topicDict.get(userTopicName); //If yes then it will get the list filled with post that belongs to that topic
+                    int userPostCount = 0; //How many posts users have in that topic
+                    int currentListLength = currentList->getLength(); //Length of the whole topic list including those that weren't created by user
+                    printStickyByUser(currentListLength, *currentList,userPostCount); 
+                    if (userPostCount == 0) { //No posts by user
                         cout << "No post for this topic yet." << endl;
                     }
                     else {
                         int seePost;
                         cout << "Which post number you want to see: ";
                         cin >> seePost;
-                        if (i >= seePost && 0 < seePost) {
-                            p = currentList->getAddress(seePost - 1);
+                        if (int i = 0 <= currentListLength && 0 < seePost && currentList->get(seePost).getUser() == currentUser.getName()) { //validation to stop users from updating other people's post as well as index out of the list
+                            p = currentList->getAddress(seePost - 1); //Gets the post pointer which the user specified they want to view
                             cout << endl;
                             deleteAndEditOption(); //Prints the option list
                             cin >> userPostOption;
@@ -102,12 +106,12 @@ int main()
                                     for (int x = description.size(); x >= 0; x--) {//Splits the string description into char and adds it into new char stack
                                         charStack.push(description[x]);
                                     }
-                                    charStack = charStack.inverseStack();
+                                    charStack = charStack.inverseStack(); //inverse the stack so that the new string will be added correctly
                                     charStack.pop(); //Removes additional white space that came when changing the string into char
                                     //charStack.
                                     while (editChoice) {
                                         cout << "Current description: ";
-                                        charStack.printInversed(charStack);
+                                        charStack.printInversed(charStack); //Prints the description
                                         cout << endl;
                                         cout << "[1] Add to description" << endl;
                                         cout << "[2] Delete some characters" << endl;
@@ -116,20 +120,19 @@ int main()
                                         cin >> editChoice;
                                         if (editChoice == 1) {
                                             string additionalWords;
-                                            charStack.printInversed(charStack);
+                                            charStack.printInversed(charStack); //Prints the description so the user has an idea of what they want to add
                                             cin.ignore(numeric_limits<streamsize>::max(), '\n'); //Allows for spacing
                                             getline(cin, additionalWords);
                                             for (int i = 0; i < additionalWords.size(); i++) {//Splits the string input into char and adds it into new char stack
                                                 charStack.push(additionalWords[i]);
                                             }
-                                            charStack.printInversed(charStack);
                                             cout << endl;
                                         }
-                                        else if (editChoice == 2) {
+                                        else if (editChoice == 2) { //Undo feature character
                                             int undoChoice = 1;
-                                            while (undoChoice == 1) {
+                                            while (undoChoice == 1) { //Undo
                                                 cout << "Current description: ";
-                                                charStack.printInversed(charStack);
+                                                charStack.printInversed(charStack); //Shows current description
                                                 cout << endl;
                                                 cout << "[1] Undo" << endl << "[0] Quit: " << endl << "Option: ";
                                                 cin >> undoChoice;
@@ -141,26 +144,26 @@ int main()
                                                 }
                                             }
                                         }
-                                        else if (editChoice == 3) {
-                                            string newDescription = "";
+                                        else if (editChoice == 3) { //Done editing
+                                            string newDescription = ""; 
                                             int charStackLength = charStack.getLength();
-                                            charStack = charStack.inverseStack();
+                                            charStack = charStack.inverseStack(); //Inverse it back so the new string wont be opposite
                                             for (int c = 0; c < charStackLength; c++) { //Gets all the char from the stack and adds it into a string
-                                                newDescription += charStack.top();
-                                                charStack.pop();
+                                                newDescription += charStack.top(); //Gets the top of the stack and adds it into the previously empty variable
+                                                charStack.pop();//Removes it so the next top will be different
                                             }
                                             p->setDescription(newDescription); //Sets new description
-                                            editChoice = false;
+                                            editChoice = false; //break
                                         }
                                         else {
                                             cout << "Enter a valid option" << endl;
                                         }
                                     }
                                 }
-                                else if (OptionChoice == 2) {
-                                    List<Post>* postTopicList = topicDict.get(userTopicName);
-                                    postTopicList->remove(*p);
-                                    p->DeleteFromTextFile(p);
+                                else if (OptionChoice == 2) { //Delete Post
+                                    List<Post>* postTopicList = topicDict.get(userTopicName); //Gets referenced post list under the chosen topic
+                                    postTopicList->remove(*p); //uses the remove function to remove based on post class. The remove function uses the operator== function to equate the Post to another Post
+                                    p->DeleteFromTextFile(p); //Rayzin Help input here
                                 }
                                 else {
                                     cout << "Please enter a valud option" << endl;
@@ -176,46 +179,57 @@ int main()
                     cout << "No such topic" << endl;
                 }
             }
-            else if (option == 2) {
+            else if (option == 2) { //Create Topic
                 string topicName;
-                List<Post> postList;
+                List<Post> postList; //Empty post list as there can't be a post before the topic has been created
                 cout << "Enter the topic you want to create: ";
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 getline(cin, topicName);
-                Topic t(topicName, postList);
-                if (topicDict.contain(topicName)) {
+                Topic t(topicName, postList);//Creates a topic class with the topic name and empty post list
+                if (topicDict.contain(topicName)) { //Validation to check whether the topic is already inserted into the list
                     cout << "This topic already exist" << endl;
                 }
                 else {
-                    topicDict.add(topicName, postList);
+                    topicDict.add(topicName, postList); //Add the newly created topic class into the dictionary
                     cout << "created!" << endl;
                 }
             }
-            else if (option == 3) {
+            else if (option == 3) { //Create Post
                 string topicName;
                 string title, desc;
                 cout << "List of available topics:" << endl;
                 topicDict.print();
                 cout << "Enter what topic this post is about: ";
                 cin >> topicName;
-                if (topicDict.contain(topicName)) {
+                if (topicDict.contain(topicName)) {//Checks if the topic entered is inside the topic dictionary
                     cout << "Enter the post's title: ";
                     cin.ignore(numeric_limits<streamsize>::max(), '\n'); //Allows for spacing
                     getline(cin, title);
-                    cout << "Enter the post's description: "; //Allows for spacing
-                    getline(cin, desc);
-                    Stack<Reply> s = Stack<Reply>();
-                    List<string> l = List<string>();
-                    Post p = Post(title, desc, currentUser.getName(), topicName, l, s);
-                    topicDict.getAddress(topicName).add(p);
-                    cout << "created!" << endl;
-                    p.saveToTextFile();
+                    currentList = topicDict.get(topicName);
+                    bool dupe = false;
+                    for (int i = 0; i < currentList->getLength(); i++) {
+                        if (currentList->get(i).getPostTitle() == title) {
+                            cout << "There is already a post about this! Check it out" << endl;
+                            dupe = true;
+                            break;
+                        }
+                    }
+                    if (dupe == false) {
+                        cout << "Enter the post's description: "; //Allows for spacing
+                        getline(cin, desc);
+                        Stack<Reply> s = Stack<Reply>(); //Empty reply list as there cannot be a reply before the post was created
+                        List<string> l = List<string>(); //Empty like list as there cannot be any likes before the post was created
+                        Post p = Post(title, desc, currentUser.getName(), topicName, l, s); //Making of the post class to be inserted later
+                        topicDict.getAddress(topicName).add(p); //Gets the reference of the post list based on the topic entered by user and adds a post into that list
+                        cout << "created!" << endl;
+                        p.saveToTextFile(); //Rayzin Help input here
+                    }
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
                 }
             }
-            else if (option == 4) {
+            else if (option == 4) { //Rayzin Help input here. This whole option
                 cout << "List of available topics:" << endl;
                 topicDict.print();
                 string topicName;
@@ -224,10 +238,11 @@ int main()
                 if (topicDict.contain(topicName)) {
                     currentList = topicDict.get(topicName);
                     int i = 0;
-                    for (i; i < currentList->getLength(); i++) {
+                    printSticky(currentList->getLength(), *currentList, i);
+                    /*for (i; i < currentList->getLength(); i++) {
                         cout << "Post " << i + 1 << endl;
                         printPost(currentList->get(i));
-                    }
+                    }*/
                     if (i == 0) {
                         cout << "No post for this topic yet." << endl;
                     }
@@ -275,7 +290,7 @@ int main()
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
                 }
             }
-            else if (option == 5) {
+            else if (option == 5) { //Pin topic
                 int userPostOption;
                 cout << "List of available topics:" << endl;
                 topicDict.print();
@@ -283,19 +298,17 @@ int main()
                 cout << "Enter a topic name: ";
                 cin >> userTopicName;
                 if (topicDict.contain(userTopicName)) {
-                    currentList = topicDict.get(userTopicName);
-                    int notNeeded = 0;
-                    int userPostCount = 0;
+                    currentList = topicDict.get(userTopicName); //Get reference post list by topic name
+                    int postPrinted = 0;
                     int pinnedPost;
                     int currentListLength = currentList->getLength();
-                    printSticky(currentListLength, *currentList, notNeeded);
+                    printSticky(currentListLength, *currentList, postPrinted);//prints the current list but prints the sticky note posts first if there are any
                     cout << "Enter the post number that you want to pin: ";
                     cin >> pinnedPost;
-                    if (pinnedPost > 0 && pinnedPost <= currentListLength) {
+                    if (pinnedPost > 0 && pinnedPost <= currentListLength && currentList->get(pinnedPost).getUser() == currentUser.getName()) { //Validation to stop user from pinning other peoples post
                         p = currentList->getAddress(pinnedPost-1);
                         p->setSticky();
                         cout << "Pinned!" << endl << endl;
-                        printSticky(currentListLength,*currentList,userPostCount);
                     }
                     else {
                         cout << "Invalid choice! Did not pin" << endl;
@@ -303,7 +316,7 @@ int main()
                 }
 
             }
-            else if (option == 6) {
+            else if (option == 6) {// Rayzin Help input here
                 loggedIn = false;
                 cout << "Logged out" << endl;
             }
@@ -318,6 +331,17 @@ int main()
     }
 }
 
+
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+* 
+* Input:
+* The new name
+* 
+* Output:
+* None
+*/
 Dictionary<string> loadInfo() {
 
     //read textfile then for loop make user add into dictionary
@@ -336,6 +360,17 @@ Dictionary<string> loadInfo() {
     return d;
 }
 
+
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+*
+* Input:
+* The new name
+*
+* Output:
+* None
+*/
 Dictionary<List<Post>> loadTopic() {
     Dictionary<List<Post>> d = Dictionary<List<Post>>();
     Post p;
@@ -354,6 +389,17 @@ Dictionary<List<Post>> loadTopic() {
     return d;
 }
 
+
+/**
+* Description:
+* Simple function that prints out the UI for the login page
+*
+* Input:
+* None
+*
+* Output:
+* Printed statement
+*/
 void login()
 {
     cout << endl;
@@ -366,6 +412,17 @@ void login()
     cout << "Enter your option: ";
 }
 
+
+/**
+* Description:
+* Simple function that prints the options for the main menu
+*
+* Input:
+* None
+*
+* Output:
+* Printed statement
+*/
 void displayMenu()
 {
     cout << endl;
@@ -382,6 +439,17 @@ void displayMenu()
     cout << "Enter your option: ";
 }
 
+
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+*
+* Input:
+* The new name
+*
+* Output:
+* None
+*/
 void printPost(Post post) {
     int width = post.getPostTitle().length() + 19;
     string cover = string(width, '-');
@@ -403,6 +471,17 @@ void printPost(Post post) {
     cout << "\n";
 }
 
+
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+*
+* Input:
+* The new name
+*
+* Output:
+* None
+*/
 void postDetails(Post post, int i) {
     cout << "Post " << i << endl;
     int width = post.getPostTitle().length() + 19;
@@ -441,6 +520,17 @@ void postDetails(Post post, int i) {
 
 }
 
+
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+*
+* Input:
+* The new name
+*
+* Output:
+* None
+*/
 void wrapText(const string& text, int width) {
     istringstream iss(text);
     string word;
@@ -460,7 +550,16 @@ void wrapText(const string& text, int width) {
     cout << line << endl;
 }
 
-
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+*
+* Input:
+* The new name
+*
+* Output:
+* None
+*/
 void userLogin(Dictionary<string> userData) {
     string username;
     string password;
@@ -478,6 +577,16 @@ void userLogin(Dictionary<string> userData) {
     }
 }
 
+/**Rayzin Help input here
+* Description:
+* Sets a new name for the user
+*
+* Input:
+* The new name
+*
+* Output:
+* None
+*/
 void userSignUp(Dictionary<string> userData) 
 {
     string username;
@@ -503,13 +612,54 @@ void userSignUp(Dictionary<string> userData)
    
 }
 
+
+/**
+* Description:
+* Simple print function that prints the delete and edit option
+*
+* Input:
+* None
+*
+* Output:
+* Printed statement
+*/
 void deleteAndEditOption() {
     cout << "[1] Edit/Delete Post" << endl;
     cout << "[2] Back to browse" << endl;
     cout << "Enter option: ";
 }
 
+
+/**
+* Description:
+* Prints out Posts that was specified with by the List<Post> class input. It goes through two lists, one to check for sticky posts and one for normal posts that are not sticky
+*
+* Input:
+* list length - to know where the for loop will stop traversing at
+* list of post - to print and traverse through
+* count - to count the amount of user posts there are
+* 
+* Output:
+* Printed statement
+*/
 void printSticky(int currentListLength, List<Post> currentList, int& count) {
+    for (int x = 0; x < currentListLength; x++) {
+        if ( currentList.get(x).getSticky()) {
+            count++;
+            cout << "Post " << x + 1 << endl;
+            printPost(currentList.get(x));
+        }
+    }
+    for (int i = 0; i < currentListLength; i++) {
+        if ( currentList.get(i).getSticky() == false) {
+            count++;
+            cout << "Post " << i + 1 << endl;
+            printPost(currentList.get(i));
+        }
+    }
+}
+
+void printStickyByUser(int currentListLength, List<Post> currentList, int& count) {
     for (int x = 0; x < currentListLength; x++) {
         if (currentList.get(x).getUser() == currentUser.getName() && currentList.get(x).getSticky()) {
             count++;

@@ -1,3 +1,13 @@
+/**
+* Group: 7
+* -----------------------------------
+* Name Member 1:         Low Hong Wei
+* Student ID Member 1:   S10203927J
+*
+* Name Member 2:         Ng Ray Zin
+* Student ID Member 2:   S10222457
+* ------------------------------------
+*/
 #pragma once
 #include <string>
 #include <iostream>
@@ -86,8 +96,6 @@ public:
 	// post: none
 	// return the number of items in the list
 	int getLength();
-
-	ItemType* getPost(string userName, string title);
 
 	bool checkSticky(ItemType& stickyPost);
 
@@ -332,15 +340,4 @@ void List<ItemType>::print()
         cout << current->item << endl;
         current = current->next;
     }
-}
-
-template<typename ItemType>
-ItemType* List<ItemType>::getPost(string userName, string title) {
-	Node* current = firstNode;
-	while (current != NULL) {
-		if (current->item.getUser() == userName && current->item.getPostTitle() == title) {
-			return &(current->item);
-		}
-		current = current->next;
-	}
 }

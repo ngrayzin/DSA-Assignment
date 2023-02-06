@@ -30,11 +30,11 @@
     <ClCompile Include="Topic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Post.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Reply.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Post.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,16 @@
 #pragma once
 #include <string>
 #include <iostream>
+/**
+* Group: 7
+* -----------------------------------
+* Name Member 1:         Low Hong Wei
+* Student ID Member 1:   S10203927J
+*
+* Name Member 2:         Ng Ray Zin
+* Student ID Member 2:   S10222457
+* ------------------------------------
+*/
 #include <sstream>
 #include <fstream>
 #include <vector>
@@ -19,17 +29,148 @@ private:
 	Node* topNode;
 
 public:
+	/**
+	* Description:
+	* Initalises the stack data structure
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* None
+	*/
 	Stack();
+
+	/**
+	* Description:
+	* Deconstructor for the stack data structure. Deletes it when finished with the program
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* None
+	*/
 	~Stack();
+
+	/**
+	* Description:
+	* Adds an item into the stack data structure through Node
+	*
+	* Input:
+	* The item. Since this is a generic data struct it can be anything
+	*
+	* Output:
+	* Boolean. True if it was successfully added, False if it was not.
+	*/
 	bool push(ItemType item);
+
+	/**
+	* Description:
+	* Removes the item at the very top of the stack
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* Removal of the topNode
+	*/
 	bool pop();
+
+	/**
+	* Description:
+	* Removes the item at the top of the stack but returns that item to a reference
+	*
+	* Input:
+	* ItemType reference so that it can be returned
+	*
+	* Output:
+	* Boolean. True if successfully removed, False if unsuccessful.
+	*/
 	bool pop(ItemType& item);
+
+	/**
+	* Description:
+	* Checks if the stack is empty
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* Boolean. True if there are no Nodes that is in topNode. False if there is
+	*/
 	bool isEmpty();
+
+	/**
+	* Description:
+	* Inverses the stack. The topNode will be at the bottom while the Node at the bottom will be at the top. The stack will be basically flipped
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* A flipped stack
+	*/
 	Stack<ItemType> inverseStack();
+
+	/**
+	* Description:
+	* Clears all the Nodes from the stack
+	*
+	* Input:
+	* Stack that user wants to clear
+	*
+	* Output:
+	* Empty stack
+	*/
 	void clear(Stack<ItemType>& s);
+
+	/**
+	* Description:
+	* Gets the top of the stack and returns it. It is the topNode and returns its item
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* Item at the top of the Stack
+	*/
 	ItemType top();
+
+	/**
+	* Description:
+	* Gets the length of the stack
+	*
+	* Input:
+	* None
+	*
+	* Output:
+	* The length of the stack
+	*/
 	int getLength();
+
+	/**Rayzin Help input here
+	* Description:
+	* 
+	*
+	* Input:
+	* 
+	*
+	* Output:
+	* 
+	*/
 	List<ItemType> toList();
+
+	/**
+	* Description:
+	* Prints the contents of the stack in order of insertion
+	*
+	* Input:
+	* Stack that user wants to print
+	*
+	* Output:
+	* Printed Statement
+	*/
 	void printInversed(Stack<ItemType> s);
 };
 
