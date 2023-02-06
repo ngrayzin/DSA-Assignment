@@ -90,7 +90,9 @@ int main()
                         int seePost;
                         cout << "Which post number you want to see: ";
                         cin >> seePost;
-                        if (int i = 0 <= currentListLength && 0 < seePost && currentList->get(seePost).getUser() == currentUser.getName()) { //validation to stop users from updating other people's post as well as index out of the list
+                        int i = 0;
+
+                        if (seePost <= currentListLength && 0 < seePost && currentList->get(seePost-1).getUser() == currentUser.getName()) { //validation to stop users from updating other people's post as well as index out of the list
                             p = currentList->getAddress(seePost - 1); //Gets the post pointer which the user specified they want to view
                             cout << endl;
                             deleteAndEditOption(); //Prints the option list
@@ -305,7 +307,7 @@ int main()
                     printSticky(currentListLength, *currentList, postPrinted);//prints the current list but prints the sticky note posts first if there are any
                     cout << "Enter the post number that you want to pin: ";
                     cin >> pinnedPost;
-                    if (pinnedPost > 0 && pinnedPost <= currentListLength && currentList->get(pinnedPost).getUser() == currentUser.getName()) { //Validation to stop user from pinning other peoples post
+                    if (pinnedPost > 0 && pinnedPost <= currentListLength && currentList->get(pinnedPost-1).getUser() == currentUser.getName()) { //Validation to stop user from pinning other peoples post
                         p = currentList->getAddress(pinnedPost-1);
                         p->setSticky();
                         cout << "Pinned!" << endl << endl;
