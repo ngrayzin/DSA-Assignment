@@ -22,8 +22,8 @@ void postDetails(Post post, int i);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 void deleteAndEditOption();
-void printSticky(int length, List<Post> p,int& count);
-
+void printSticky(int length, List<Post> p, int& count);
+void wrapText(const string& text, int width);
 static bool loggedIn = false;
 User currentUser;
 
@@ -33,6 +33,7 @@ int main()
     Dictionary<string> userData = loadInfo();
     Dictionary<List<Post>> topicDict = loadTopic();
     List<Post>* currentList;
+    List<Post>* pointerList;
     Post* p;
     int option = 1;
     while (option != 0)
@@ -159,6 +160,7 @@ int main()
                                 else if (OptionChoice == 2) {
                                     List<Post>* postTopicList = topicDict.get(userTopicName);
                                     postTopicList->remove(*p);
+                                    p->DeleteFromTextFile(p);
                                 }
                                 else {
                                     cout << "Please enter a valud option" << endl;
@@ -186,7 +188,6 @@ int main()
                 }
                 else {
                     topicDict.add(topicName, postList);
-                    //t.saveToTextFile();
                     cout << "created!" << endl;
                 }
             }
@@ -208,7 +209,7 @@ int main()
                     Post p = Post(title, desc, currentUser.getName(), topicName, l, s);
                     topicDict.getAddress(topicName).add(p);
                     cout << "created!" << endl;
-                    //p.saveToTextFile();
+                    p.saveToTextFile();
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
@@ -257,8 +258,8 @@ int main()
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
-                                    //p.updateTextFile(p);
-                                    //topicDict = loadTopic();
+                                    Post save;
+                                    save.updateTextFile(p);
                                 }
                                 else {
                                     cout << "invalid" << endl;
@@ -308,6 +309,7 @@ int main()
             }
             else if (option == 0) {
                 cout << "BYE BYE" << endl;
+                //save file
             }
             else
                 cout << "Invalid option! Please try again." << endl;
@@ -381,31 +383,46 @@ void displayMenu()
 }
 
 void printPost(Post post) {
-    cout << "+----------+-----------+" << endl;
-    cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Topic    | " << setw(10) << post.getTopic() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Title    | " << setw(10) << post.getPostTitle() << "|" << endl;
-    cout << "+----------------------+" << endl;
-    cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
+    int width = post.getPostTitle().length() + 19;
+    string cover = string(width, '-');
+    int spaces = (width - post.getPostTitle().length() - 2) / 2;
+    cout << "+" + cover + "+" << endl;
+    cout << "|";
+    for (int i = 0; i < spaces; i++)
+        cout << " ";
+    cout << post.getPostTitle();
+    for (int i = 0; i < width - spaces - post.getPostTitle().length(); i++)
+        cout << " ";
+    cout << "|" << endl;
+    cout << "+" + cover + "+" << endl;
+    cout << "Post by: " << post.getUser() << endl;
+    cout << "Topic: "<< post.getTopic() << endl;
+    cout << "Likes: " << post.getLikeList()->getLength() << endl;
+    cout << "Replies: " << post.getReplies()->getLength() << endl;
+    cout << "+" + cover + "+" << endl;
     cout << "\n";
 }
 
 void postDetails(Post post, int i) {
     cout << "Post " << i << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| username | " << setw(10) << post.getUser() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Topic    | " << setw(10) << post.getTopic() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
-    cout << "| Title    | " << setw(10) << post.getPostTitle() << "|" << endl;
-    cout << "+----------------------+" << endl;
-    cout << "| Content  | " << setw(10) << post.getDescription() << "|" << endl;
-    cout << "+----------+-----------+" << endl;
+    int width = post.getPostTitle().length() + 19;
+    string cover = string(width, '-');
+    cout << "+" + cover + "+" << endl;
+    int spaces = (width - post.getPostTitle().length() - 2) / 2;
+    cout << "|";
+    for (int i = 0; i < spaces; i++)
+        cout << " ";
+    cout << post.getPostTitle();
+    for (int i = 0; i < width - spaces - post.getPostTitle().length(); i++)
+        cout << " ";
+    cout << "|" << endl;
+    cout << "+" + cover + "+" << endl;
+    wrapText(post.getDescription(), width);
+    cout << "-" + cover + "-" << endl;
+    cout << "Topic: " << post.getTopic() << endl;
+    cout << "Posted by: " << post.getUser() << endl;
     cout << "Likes: " << post.getLikeList()->getLength() << endl;
-    cout << "Comments: " << post.getReplies()->getLength() << endl;
+    cout << "Replies: " << post.getReplies()->getLength() << endl;
     cout << "\n";
     cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
     post.printReplies();
@@ -422,6 +439,25 @@ void postDetails(Post post, int i) {
         cout << "[3] Back to browse" << endl;
     }
 
+}
+
+void wrapText(const string& text, int width) {
+    istringstream iss(text);
+    string word;
+    string line;
+    while (iss >> word) {
+        if (line.length() + word.length() + 1 > width) {
+            cout << line << endl;
+            line = "";
+        }
+        if (line.empty()) {
+            line = word;
+        }
+        else {
+            line += " " + word;
+        }
+    }
+    cout << line << endl;
 }
 
 

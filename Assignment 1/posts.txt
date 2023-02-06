@@ -1,9 +1,14 @@
-f,f,asd,list,:pppls:on:hig,billy.
 got,got,asd,list,,asd.
-tres,abouttrees,asd,trees
 try,try,asd,list,mark:omg:billy:s:,mark.billy.nil.
-fg,fg,asd,list,,
+fg,fg,asd,list,no:,asd.
 DIctionary,1st,billy,dictionary,,billy.
-newtree,lovetree,asd,trees
+newtree,lovetree,asd,trees,hello:imasd:,billy.
 q,qys,asd,queue,test,billy.mark.
 searching,foru,mark,search,heyyy:byyee:,mark.billy.
+q,p,billy,queue,,
+finding,how,mark,search
+da,s s,asd,trees,,
+I have treees at home,Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.,asd,trees
+I HATE QUEUEUEUEUEE,Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.,asd,queue
+hello ,waserxdtrjipxtrcvasdfghjklpoiuytrewqasdfghjkloiuytrewazxcvbnm,loiuytredsxc v,lkiuytrdsxcvbnm,lkjhgfdcvbnm,,asd,trees
+pop,popcorn is nice,asd,queue,popcorn is nice:popcorn is nice:,asd.

@@ -42,7 +42,8 @@ public:
 	Stack<Reply> *getReplies();
 	List<Post> returnPostListByUser(User user);
 	bool operator==(const Post& rhs);
-	void updateTextFile(Post p);
+	void updateTextFile(Post* p);
+	void DeleteFromTextFile(Post* p);
 	vector<string> split(const string& s, char delim);
 	string toString();
 	bool getSticky();

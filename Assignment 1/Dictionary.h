@@ -54,6 +54,10 @@ public:
 	// return the item with the specified key from the Dictionary
 	ItemType* get(KeyType key);
 
+    // get an item with the specified key in the Dictionary (retrieve)
+    // pre : key must exist in the dictionary
+    // post: none
+    // return the item with the specified key from the Dictionary
     ItemType& getAddress(KeyType key);
 
     // see if the key and itemtype exists in the dictionary
@@ -82,7 +86,7 @@ public:
 
     void print();
 
-    ItemType search(string name);
+    ItemType* search(string name);
 
 
     //List<ItemType> getAll();
@@ -335,10 +339,10 @@ void Dictionary<ItemType>::print() {
 }
 
 template<typename ItemType>
-ItemType Dictionary<ItemType>::search(string name)
+ItemType* Dictionary<ItemType>::search(string name)
 {
     int count = 1;
-    ItemType postList;
+    ItemType item;
     if (size > 0) {
         for (int i = 0; i < MAX_SIZE; i++) {
             if (items[i] != NULL) {
@@ -361,7 +365,7 @@ ItemType Dictionary<ItemType>::search(string name)
                         cout << "+----------+-----------+" << endl;
                         cout << "\n";
                         count++;
-                        postList.add(list.get(r));
+                        item.add(list.get(r));
                     }
                 }
             }
@@ -371,7 +375,7 @@ ItemType Dictionary<ItemType>::search(string name)
         cout << "no content" << endl;
     }
 
-    return postList;
+    return &item;
 }
 
 
