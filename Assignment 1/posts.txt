@@ -1,9 +1,11 @@
-f,f,asd,list,:pppls:on:hig,billy.
+f,f,asd,list,:pppls:on:hig:,billy.asd.
 got,got,asd,list,,asd.
-tres,abouttrees,asd,trees
+tres,abouttrees,asd,trees,hello:,mark.
 try,try,asd,list,mark:omg:billy:s:,mark.billy.nil.
-fg,fg,asd,list,,
+fg,fg,asd,list,no:,asd.
 DIctionary,1st,billy,dictionary,,billy.
-newtree,lovetree,asd,trees
+newtree,lovetree,asd,trees,hello:imasd:,billy.
 q,qys,asd,queue,test,billy.mark.
 searching,foru,mark,search,heyyy:byyee:,mark.billy.
+q,p,billy,queue
+finding,how,mark,search

@@ -32,6 +32,7 @@ int main()
     Dictionary<string> userData = loadInfo();
     Dictionary<List<Post>> topicDict = loadTopic();
     List<Post> currentList;
+    List<Post>* pointerList;
     Post* p;
     int option = 1;
     while (option != 0)
@@ -58,7 +59,7 @@ int main()
             cin >> option;
             if (option == 1) {
                 int userPostOption;
-                topicDict.search(currentUser.getName()); // print post
+                pointerList = topicDict.search(currentUser.getName()); // print post
                 cout << endl;
                 deleteAndEditOption(); //Prints the option list
                 cin >> userPostOption;
@@ -137,7 +138,7 @@ int main()
                         }
                     }
                     else if (OptionChoice == 2) {
-                        userPostList.remove(*p);
+                        pointerList->remove(*p);
                     }
                     else {
                         cout << "F";
@@ -156,7 +157,7 @@ int main()
                 }
                 else {
                     topicDict.add(topicName, postList);
-                    //t.saveToTextFile();
+                    t.saveToTextFile();
                     cout << "created!" << endl;
                 }
             }
@@ -177,7 +178,7 @@ int main()
                     Post p = Post(title, desc, currentUser.getName(), topicName, l, s);
                     topicDict.getAddress(topicName).add(p);
                     cout << "created!" << endl;
-                    //p.saveToTextFile();
+                    p.saveToTextFile();
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
@@ -226,8 +227,8 @@ int main()
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
-                                    //p.updateTextFile(p);
-                                    //topicDict = loadTopic();
+                                    Post save;
+                                    save.updateTextFile(p);
                                 }
                                 else {
                                     cout << "invalid" << endl;

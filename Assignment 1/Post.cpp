@@ -143,7 +143,7 @@ void Post::saveToTextFile()
 }
 
 
-void Post::updateTextFile(Post p)
+void Post::updateTextFile(Post* p)
 {
     // Read the existing contents into a vector of strings
     vector<string> lines;
@@ -156,9 +156,9 @@ void Post::updateTextFile(Post p)
         getline(ss, desc, ',');
         getline(ss, username, ',');
         getline(ss, topic, ',');
-        if (title == p.getPostTitle() && desc == p.getDescription() && username == p.getUser() && topic == p.getTopic()) {
+        if (title == p->getPostTitle() && desc == p->getDescription() && username == p->getUser() && topic == p->getTopic()) {
             // If the line is the post that needs to be updated, replace it with the updated post
-            line = p.toString();
+            line = p->toString();
         }
         lines.push_back(line);
     }
