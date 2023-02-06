@@ -87,6 +87,8 @@ public:
 	// return the number of items in the list
 	int getLength();
 
+	ItemType& getPost(string userName, string title);
+
 	//------------------- Other useful functions -----------------
 
 	// display the items in the list
@@ -326,3 +328,29 @@ void List<ItemType>::print()
     }
 }
 
+template<typename ItemType>
+ItemType &List<ItemType>::getPost(string userName, string title) {
+	Node* current = firstNode;
+	while (current != NULL) {
+		if (current->item.getUser() == userName && current->item.getPostTitle() == title) {
+			cout << "returned" << endl;
+			return current->item;
+		}
+		current = current->next;
+	}
+
+    /*for (int i = 0; i < MAX_SIZE; i++) {
+        if (items[i] != NULL) {
+            if (items[i]->key == topicKey) {
+                ItemType list = items[i]->item;
+                int postListLength = list.getLength();
+                for (int x = 0; x < postListLength; x++) {
+                    if (list.get(x) == Post) {
+                        return (*list.get(x));
+                    }
+                }
+            }
+
+        }
+    }*/
+}
