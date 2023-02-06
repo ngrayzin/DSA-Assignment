@@ -171,6 +171,32 @@ void Post::updateTextFile(Post* p)
     ofile.close();
 }
 
+void Post::DeleteFromTextFile(Post* p)
+{
+    // Read the existing contents into a vector of strings
+    vector<string> lines;
+    ifstream ifile("posts.txt", ios::in);
+    string line;
+    while (getline(ifile, line)) {
+        stringstream ss(line);
+        string title, desc, username, topic;
+        getline(ss, title, ',');
+        getline(ss, desc, ',');
+        getline(ss, username, ',');
+        getline(ss, topic, ',');
+        if (!(title == p->getPostTitle() && desc == p->getDescription() && username == p->getUser() && topic == p->getTopic())) {
+            // If the line is NOT the post that needs to be deleted, add it to the vector of strings
+            lines.push_back(line);
+        }
+    }
+    ifile.close();
+    // Write the vector of strings back to the file
+    ofstream ofile("posts.txt", ios::out);
+    for (auto& l : lines)
+        ofile << l << endl;
+    ofile.close();
+}
+
 void Post::readTextFileByUser(User user)
 {
     ifstream file("posts.txt");
