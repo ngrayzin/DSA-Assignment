@@ -52,7 +52,7 @@ public:
 	// pre : key must exist in the dictionary
 	// post: none
 	// return the item with the specified key from the Dictionary
-	ItemType get(KeyType key);
+	ItemType* get(KeyType key);
 
     ItemType& getAddress(KeyType key);
 
@@ -82,7 +82,7 @@ public:
 
     void print();
 
-    List<ItemType> search(string name);
+    ItemType search(string name);
 
 
     //List<ItemType> getAll();
@@ -108,7 +108,7 @@ Dictionary<ItemType>::Dictionary() {
 
 template <typename ItemType>
 Dictionary<ItemType>::~Dictionary() {
-    for (int i = 0; i > MAX_SIZE; i++) {
+    for(int i = 0; i < MAX_SIZE; i++) {
         if (items[i] != NULL) {
             Node* current = items[i];
             while (current != NULL) {
@@ -235,19 +235,19 @@ void Dictionary<ItemType>::remove(KeyType key)
 }
 
 template <typename ItemType>
-ItemType Dictionary<ItemType>::get(KeyType key)
+ItemType* Dictionary<ItemType>::get(KeyType key)
 {
     int index = hash(key);
     if (items[index] != NULL) {
         Node* current = items[index];
         while (current != NULL) {
             if (current->key == key) {
-                return current->item;
+                return &(current->item);
             }
             current = current->next;
         }
     }
-    return ItemType();
+    return nullptr;
 }
 
 template <typename ItemType>
@@ -335,16 +335,17 @@ void Dictionary<ItemType>::print() {
 }
 
 template<typename ItemType>
-List<ItemType> Dictionary<ItemType>::search(string name)
+ItemType Dictionary<ItemType>::search(string name)
 {
     int count = 1;
-    List<ItemType> postList;
+    ItemType postList;
     if (size > 0) {
         for (int i = 0; i < MAX_SIZE; i++) {
             if (items[i] != NULL) {
                 string key = items[i]->key;
                 ItemType list = items[i]->item; //List<Post>
-                for (int r = 0; r < list.getLength();r++) { //for each Post in List<Post>
+                int listLength = list.getLength();
+                for (int r = 0; r < listLength; r++) { //for each Post in List<Post>
                     string username = list.get(r).getUser();
                     if (username == name) {     //If username is the same 
                         cout << "\n";
@@ -360,7 +361,7 @@ List<ItemType> Dictionary<ItemType>::search(string name)
                         cout << "+----------+-----------+" << endl;
                         cout << "\n";
                         count++;
-                        //postList.add(list.get(r));
+                        postList.add(list.get(r));
                     }
                 }
             }
@@ -372,6 +373,5 @@ List<ItemType> Dictionary<ItemType>::search(string name)
 
     return postList;
 }
-
 
 

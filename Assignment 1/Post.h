@@ -15,6 +15,7 @@ private:
 	string username;
 	Stack<Reply> replies;
 	List<string> likeList;
+	bool sticky;
 
 
 public:
