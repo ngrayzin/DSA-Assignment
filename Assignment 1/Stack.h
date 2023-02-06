@@ -30,6 +30,7 @@ public:
 	ItemType top();
 	int getLength();
 	List<ItemType> toList();
+	void printInversed(Stack<ItemType> s);
 };
 
 template <typename ItemType>
@@ -157,4 +158,13 @@ List<ItemType> Stack<ItemType>::toList() {
 		curr = curr->next;
 	}
 	return list;
+}
+
+template <typename ItemType> void Stack<ItemType>::printInversed(Stack<ItemType> s) {
+	s = s.inverseStack();
+	Node* current = s.topNode;
+	while (current) {
+		cout << current->item;
+		current =current->next;
+	}
 }
