@@ -89,6 +89,8 @@ public:
 
 	ItemType* getPost(string userName, string title);
 
+	bool checkSticky(ItemType& stickyPost);
+
 	//------------------- Other useful functions -----------------
 
 	// display the items in the list

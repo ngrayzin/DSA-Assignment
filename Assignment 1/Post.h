@@ -45,4 +45,6 @@ public:
 	void updateTextFile(Post p);
 	vector<string> split(const string& s, char delim);
 	string toString();
+	bool getSticky();
+	void setSticky();
 };

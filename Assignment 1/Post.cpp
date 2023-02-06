@@ -23,6 +23,7 @@ Post::Post(string t, string d, string un, string top, List<string> list, Stack<R
 	topic = top;
     likeList = list;
     replies = stack;
+    sticky = false;
 }
 
 void Post::setPostTitle(string t) {
@@ -321,4 +322,17 @@ bool Post::operator==(const Post& rhs) {
     bool f = title == rhs.title;
     cout << f << endl;
     return (title == rhs.title);
+}
+
+bool Post::getSticky() {
+    if (sticky) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void Post::setSticky() {
+    sticky = true;
 }

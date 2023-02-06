@@ -22,6 +22,7 @@ void postDetails(Post post, int i);
 void userLogin(Dictionary<string> userData);
 void userSignUp(Dictionary<string> userData);
 void deleteAndEditOption();
+void printSticky(int length, List<Post> p,int& count);
 
 static bool loggedIn = false;
 User currentUser;
@@ -68,13 +69,15 @@ int main()
                     int i = 0;
                     int userPostCount = 0;
                     int currentListLength = currentList->getLength();
-                    for (i; i < currentListLength; i++) {
+                    printSticky(currentListLength, *currentList,userPostCount);
+                    /*for (i; i < currentListLength; i++) {
                         if (currentList->get(i).getUser() == currentUser.getName()) {
                             userPostCount++;
                             cout << "Post " << i + 1 << endl;
                             printPost(currentList->get(i));
                         }
-                    }
+                    }*/
+                    cout << userPostCount << endl;
                     if (userPostCount == 0) {
                         cout << "No post for this topic yet." << endl;
                     }
@@ -170,7 +173,6 @@ int main()
                 else {
                     cout << "No such topic" << endl;
                 }
-                //List<Post> userPostList = topicDict.search(currentUser.getName()); // print post
             }
             else if (option == 2) {
                 string topicName;
@@ -221,7 +223,7 @@ int main()
                 if (topicDict.contain(topicName)) {
                     currentList = topicDict.get(topicName);
                     int i = 0;
-                    for (i; i < currentList->getLength();i++) {
+                    for (i; i < currentList->getLength(); i++) {
                         cout << "Post " << i + 1 << endl;
                         printPost(currentList->get(i));
                     }
@@ -273,6 +275,34 @@ int main()
                 }
             }
             else if (option == 5) {
+                int userPostOption;
+                cout << "List of available topics:" << endl;
+                topicDict.print();
+                string userTopicName;
+                cout << "Enter a topic name: ";
+                cin >> userTopicName;
+                if (topicDict.contain(userTopicName)) {
+                    currentList = topicDict.get(userTopicName);
+                    int notNeeded = 0;
+                    int userPostCount = 0;
+                    int pinnedPost;
+                    int currentListLength = currentList->getLength();
+                    printSticky(currentListLength, *currentList, notNeeded);
+                    cout << "Enter the post number that you want to pin: ";
+                    cin >> pinnedPost;
+                    if (pinnedPost > 0 && pinnedPost <= currentListLength) {
+                        p = currentList->getAddress(pinnedPost-1);
+                        p->setSticky();
+                        cout << "Pinned!" << endl << endl;
+                        printSticky(currentListLength,*currentList,userPostCount);
+                    }
+                    else {
+                        cout << "Invalid choice! Did not pin" << endl;
+                    }
+                }
+
+            }
+            else if (option == 6) {
                 loggedIn = false;
                 cout << "Logged out" << endl;
             }
@@ -343,7 +373,8 @@ void displayMenu()
     cout << "[2] Create Topic     " << endl;
     cout << "[3] Create Post      " << endl;
     cout << "[4] Browse           " << endl;
-    cout << "[5] Logout           " << endl;
+    cout << "[5] Pin Topic        " << endl;
+    cout << "[6] Logout           " << endl;
     cout << "[0] Exit             " << endl;
     cout << "---------------------" << endl;
     cout << "Enter your option: ";
@@ -440,4 +471,21 @@ void deleteAndEditOption() {
     cout << "[1] Edit/Delete Post" << endl;
     cout << "[2] Back to browse" << endl;
     cout << "Enter option: ";
+}
+
+void printSticky(int currentListLength, List<Post> currentList, int& count) {
+    for (int x = 0; x < currentListLength; x++) {
+        if (currentList.get(x).getUser() == currentUser.getName() && currentList.get(x).getSticky()) {
+            count++;
+            cout << "Post " << x + 1 << endl;
+            printPost(currentList.get(x));
+        }
+    }
+    for (int i = 0; i < currentListLength; i++) {
+        if (currentList.get(i).getUser() == currentUser.getName() && currentList.get(i).getSticky() == false) {
+            count++;
+            cout << "Post " << i + 1 << endl;
+            printPost(currentList.get(i));
+        }
+    }
 }
