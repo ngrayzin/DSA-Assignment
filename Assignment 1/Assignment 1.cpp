@@ -31,6 +31,7 @@ int main()
 {
     Dictionary<string> userData = loadInfo();
     Dictionary<List<Post>> topicDict = loadTopic();
+    List<Post> currentList;
     int option = 1;
     while (option != 0)
     {
@@ -55,10 +56,8 @@ int main()
             displayMenu();
             cin >> option;
             if (option == 1) {
-                Post p;
                 int userPostOption;
-                //p.readTextFileByUser(currentUser);
-                List<Post> pList = p.returnPostListByUser(currentUser);
+                topicDict.search(currentUser.getName()); // print post
                 cout << endl;
                 deleteAndEditOption(); //Prints the option list
                 cin >> userPostOption;
@@ -73,7 +72,7 @@ int main()
                     cin >> OptionChoice;
                     if (OptionChoice == 1) {
                         string description = p.getDescription(); //Getting current description
-                        int editChoice=true;
+                        int editChoice = true;
                         Stack<char> charStack;
                         for (int x = description.size(); x >= 0; x--) {//Splits the string description into char and adds it into new char stack
                             cout << description[x] << endl;
@@ -136,7 +135,7 @@ int main()
                             }
                         }
                     }
-                    else if( OptionChoice == 2 ) {
+                    else if (OptionChoice == 2) {
                         userPostList.remove(p);
                     }
                     else {
@@ -170,7 +169,7 @@ int main()
                     List<string> l = List<string>();
                     Post p = Post(title, desc, currentUser.getName(), topicName, l, s);
                     topicDict.getAddress(topicName).add(p);
-                    p.saveToTextFile();
+                    //p.saveToTextFile();
                 }
                 else {
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
@@ -183,12 +182,12 @@ int main()
                 cout << "Type the topic name that you would like to browse: ";
                 cin >> topicName;
                 if (topicDict.contain(topicName)) {
-                    List<Post> list = topicDict.getAddress(topicName);
+                    currentList = topicDict.getAddress(topicName);
                     int i = 0;
-                    cout << list.getLength() << endl;
-                    for (i; i < list.getLength();i++) {
+                    cout << currentList.getLength() << endl;
+                    for (i; i < currentList.getLength();i++) {
                         cout << "Post " << i + 1 << endl;
-                        printPost(list.get(i));
+                        printPost(currentList.get(i));
                     }
                     if (i == 0) {
                         cout << "No post for this topic yet." << endl;
@@ -198,7 +197,7 @@ int main()
                         cout << "Which post number you want to see: ";
                         cin >> seePost;
                         if (i >= seePost && 0 < seePost) {
-                            Post p = list.getAddress(seePost - 1);
+                            Post p = currentList.getAddress(seePost - 1);
                             Post& real = p;
                             int detailOption = 1;
                             while (detailOption != 3) {
@@ -361,6 +360,7 @@ void postDetails(Post post, int i) {
     }
 
 }
+
 
 void userLogin(Dictionary<string> userData) {
     string username;

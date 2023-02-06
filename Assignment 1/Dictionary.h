@@ -4,6 +4,7 @@
 #include <iostream>
 #include "List.h"
 #include <random>
+#include <iomanip>
 using namespace std;
 
 const int MAX_SIZE = 101;
@@ -80,6 +81,10 @@ public:
 	int getLength();
 
     void print();
+
+    List<ItemType> search(string name);
+
+    void searchByTopic(string topic);
 
     //List<ItemType> getAll();
 	//------------------- Other useful functions -----------------
@@ -322,6 +327,81 @@ void Dictionary<ItemType>::print() {
             if (items[i] != NULL) {
                 cout << "[" << count << "] " << items[i]->key << endl;
                 count++;
+            }
+        }
+    }
+    else {
+        cout << "no content" << endl;
+    }
+}
+
+template<typename ItemType>
+List<ItemType> Dictionary<ItemType>::search(string name)
+{
+    int count = 1;
+    List<ItemType> postList;
+    if (size > 0) {
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (items[i] != NULL) {
+                string key = items[i]->key;
+                ItemType list = items[i]->item;
+                for (int r = 0; r < list.getLength();r++) {
+                    string username = list.get(r).getUser();
+                    if (username == name) {
+                        cout << "\n";
+                        cout << "Post " << count << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| username | " << setw(10) << list.get(r).getUser() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Topic    | " << setw(10) << list.get(r).getTopic() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Title    | " << setw(10) << list.get(r).getPostTitle() << "|" << endl;
+                        cout << "+----------------------+" << endl;
+                        cout << "| Content  | " << setw(10) << list.get(r).getDescription() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "\n";
+                        count++;
+                        //postList.add(list.get(r));
+                    }
+                }
+            }
+        }
+    }
+    else {
+        cout << "no content" << endl;
+    }
+
+    return postList;
+}
+
+template<typename ItemType>
+void Dictionary<ItemType>::searchByTopic(string topic)
+{
+    int count = 1;
+    if (size > 0) {
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (items[i] != NULL) {
+                string key = items[i]->key;
+                ItemType list = items[i]->item;
+                for (int r = 0; r < list.getLength();r++) {
+                    string t = list.get(r).getTopic();
+                    if (t == topic) {
+                        cout << "\n";
+                        cout << "Post " << count << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| username | " << setw(10) << list.get(r).getUser() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Topic    | " << setw(10) << list.get(r).getTopic() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "| Title    | " << setw(10) << list.get(r).getPostTitle() << "|" << endl;
+                        cout << "+----------------------+" << endl;
+                        cout << "| Content  | " << setw(10) << list.get(r).getDescription() << "|" << endl;
+                        cout << "+----------+-----------+" << endl;
+                        cout << "\n";
+                        count++;
+                        //postList.add(list.get(r));
+                    }
+                }
             }
         }
     }
