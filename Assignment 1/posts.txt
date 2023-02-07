@@ -1,7 +1,6 @@
-got,got,asd,list,,asd.
+got,got,asd,list,Cool post bro:,asd.
 fg,fg,asd,list,no:,asd.
-DIctionary,1st,billy,dictionary,,billy.
-newtree,lovetree,asd,trees,hello:imasd:,billy.
+newtree,lovetree,asd,trees,hello:imasd:Cool post bro:,billy.
 q,qys,asd,queue,test,billy.mark.
 searching,foru,mark,search,heyyy:byyee:,mark.billy.
 q,p,billy,queue,,
@@ -13,3 +12,4 @@ hello ,waserxdtrjipxtrcvasdfghjklpoiuytrewqasdfghjkloiuytrewazxcvbnm,loiuytredsx
 pop,popcorn is nice,asd,queue,popcorn is nice:popcorn is nice:,asd.
 How do i search,I am confused,asd,search,,
 hghghg,fjfjf,asd,list,,
+How to add list,I am confused,billy,list

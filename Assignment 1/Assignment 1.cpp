@@ -99,7 +99,8 @@ int main()
                             cin >> userPostOption;
                             if (userPostOption == 1) { //Editing Post
                                 int OptionChoice;
-                                cout << UNDERLINE << "Enter what you want to do to this post: " << CLOSEUNDERLINE << endl << "[1] Edit Post's Description" << endl << "[2] Delete Post" << endl << "Enter Option: ";
+                                cout << UNDERLINE << "Enter what you want to do to this post: " << CLOSEUNDERLINE << endl;
+                                cout << "[1] Edit Post's Description" << endl << "[2] Delete Post" << endl << "Enter Option: ";
                                 cin >> OptionChoice;
                                 if (OptionChoice == 1) {
                                     string description = p->getDescription(); //Getting current description
@@ -166,6 +167,7 @@ int main()
                                     List<Post>* postTopicList = topicDict.get(userTopicName); //Gets referenced post list under the chosen topic
                                     postTopicList->remove(*p); //uses the remove function to remove based on post class. The remove function uses the operator== function to equate the Post to another Post
                                     p->DeleteFromTextFile(p); //Rayzin Help input here
+                                    cout << "Deleted Post!" << endl;
                                 }
                                 else {
                                     cout << "Please enter a valud option" << endl;
@@ -307,7 +309,7 @@ int main()
                     printSticky(currentListLength, *currentList, postPrinted);//prints the current list but prints the sticky note posts first if there are any
                     cout << "Enter the post number that you want to pin: ";
                     cin >> pinnedPost;
-                    if (pinnedPost > 0 && pinnedPost <= currentListLength && currentList->get(pinnedPost-1).getUser() == currentUser.getName()) { //Validation to stop user from pinning other peoples post
+                    if (pinnedPost > 0 && pinnedPost <= currentListLength) { //Validation to stop user from pinning other peoples post
                         p = currentList->getAddress(pinnedPost-1);
                         p->setSticky();
                         cout << "Pinned!" << endl << endl;

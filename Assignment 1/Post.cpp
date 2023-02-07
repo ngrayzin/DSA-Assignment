@@ -353,10 +353,7 @@ List<Post> Post::returnPostListByUser(User user)
 }
 
 bool Post::operator==(const Post& rhs) {
-    cout << title << topic << endl;
-    cout << rhs.title << topic << endl;
     bool f = title == rhs.title;
-    cout << f << endl;
     return (title == rhs.title);
 }
 
