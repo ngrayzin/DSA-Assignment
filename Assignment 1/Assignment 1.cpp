@@ -5,7 +5,7 @@
 * Student ID Member 1:   S10203927J
 * 
 * Name Member 2:         Ng Ray Zin
-* Student ID Member 2:   S10222457
+* Student ID Member 2:   S10222457H
 * ------------------------------------
 */
 
@@ -43,8 +43,8 @@ User currentUser;
 
 int main()
 {
-    Dictionary<string> userData = loadInfo(); //Rayzin Help input here
-    Dictionary<List<Post>> topicDict = loadTopic(); //Rayzin Help input here
+    Dictionary<string> userData = loadInfo(); //fill up the dictionary with user data where key is their username and itemtype is their password
+    Dictionary<List<Post>> topicDict = loadTopic(); //fill up the dictionary with topic and List<Post> data where the key is the topic name and the itemtype is a List<Post>
     List<Post>* currentList; //A pointer post list
     List<Post>* pointerList; //A pointer post list
     Post* p; //Post pointer used to edit the chosen post
@@ -156,6 +156,7 @@ int main()
                                                 charStack.pop();//Removes it so the next top will be different
                                             }
                                             p->setDescription(newDescription); //Sets new description
+                                            p->updateTextFile(p);//writes into the text file
                                             editChoice = false; //break
                                         }
                                         else {
@@ -233,52 +234,53 @@ int main()
                     cout << "Sorry, there is no topic that matches the one specified. Try again!" << endl;
                 }
             }
-            else if (option == 4) { //Rayzin Help input here. This whole option
+            else if (option == 4) { //browse
                 cout << "List of available topics:" << endl;
-                topicDict.print();
+                topicDict.print(); // this prints out all theh available topics
                 string topicName;
-                cout << "Type the topic name that you would like to browse: ";
+                cout << "Type the topic name that you would like to browse: "; //gets topic name input from user 
                 cin >> topicName;
-                if (topicDict.contain(topicName)) {
-                    currentList = topicDict.get(topicName);
+                if (topicDict.contain(topicName)) { //if the dictionary contains the topic name
+                    currentList = topicDict.get(topicName); // then get the List<Post> from the key
                     int i = 0;
-                    printSticky(currentList->getLength(), *currentList, i);
+                    printSticky(currentList->getLength(), *currentList, i); //prints out all the post with a post index
                     /*for (i; i < currentList->getLength(); i++) {
                         cout << "Post " << i + 1 << endl;
                         printPost(currentList->get(i));
                     }*/
                     if (i == 0) {
-                        cout << "No post for this topic yet." << endl;
+                        cout << "No post for this topic yet." << endl; //if counter is 0, means there are no post for this topic
                     }
                     else {
                         int seePost;
-                        cout << "Which post number you want to see: ";
+                        cout << "Which post number you want to see: "; //prompt user for post index
                         cin >> seePost;
-                        if (i >= seePost && 0 < seePost) {
-                            p = currentList->getAddress(seePost - 1);
+                        if (i >= seePost && 0 < seePost) { //if the index is within the post index range
+                            p = currentList->getAddress(seePost - 1); //gets the pointer for the Post in the list
                             int detailOption = 1;
-                            while (detailOption != 3) {
+                            while (detailOption != 3) { //this while statment is for users to see the post details
                                 cout << "\n";
-                                postDetails(*p, seePost);
+                                postDetails(*p, seePost);//prints the entire post in detail
                                 cout << "Enter option: ";
                                 cin >> detailOption;
                                 if (detailOption == 1) {
-                                    p->addLikes(currentUser.getName());
+                                    p->addLikes(currentUser.getName()); //like the post and updates the likelist for that post
                                 }
                                 else if (detailOption == 2) {
                                     string replyMsg;
                                     cout << "Enter your message: ";
                                     cin.ignore(numeric_limits<streamsize>::max(), '\n'); //Allows for spacing
                                     getline(cin, replyMsg);
-                                    p->addReply(replyMsg);
-                                    cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
-                                    p->printReplies();
+                                    p->addReply(replyMsg); //reply to the post and update the reply stack for that post
                                     cout << endl;
+                                    /*cout << UNDERLINE << "Replies:" << CLOSEUNDERLINE << endl;
+                                    p->printReplies();
+                                    */
                                 }
                                 else if (detailOption == 3) {
                                     cout << "back" << endl;
                                     Post save;
-                                    save.updateTextFile(p);
+                                    save.updateTextFile(p); ///save all changes the user have made and write back into the text file
                                 }
                                 else {
                                     cout << "invalid" << endl;
@@ -320,13 +322,12 @@ int main()
                 }
 
             }
-            else if (option == 6) {// Rayzin Help input here
-                loggedIn = false;
+            else if (option == 6) {// Log out option
+                loggedIn = false; //sets the loggedIn to false and redirect to the login page
                 cout << "Logged out" << endl;
             }
             else if (option == 0) {
-                cout << "BYE BYE" << endl;
-                //save file
+                cout << "BYE BYE" << endl; //exit program
             }
             else
                 cout << "Invalid option! Please try again." << endl;
@@ -336,15 +337,15 @@ int main()
 }
 
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
+* This function is to load and fill the user dictinoary when the program first starts
 * 
 * Input:
-* The new name
+* None
 * 
 * Output:
-* None
+* userData
 */
 Dictionary<string> loadInfo() {
 
@@ -365,15 +366,15 @@ Dictionary<string> loadInfo() {
 }
 
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
+* This function is to load and fill the topic dictionary when the program first starts
 *
 * Input:
-* The new name
+* None
 *
 * Output:
-* None
+* topicDict
 */
 Dictionary<List<Post>> loadTopic() {
     Dictionary<List<Post>> d = Dictionary<List<Post>>();
@@ -444,15 +445,15 @@ void displayMenu()
 }
 
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
+* A function that helps print some of the  post content 
 *
 * Input:
-* The new name
+* None
 *
 * Output:
-* None
+* Printed statment
 */
 void printPost(Post post) {
     int width = post.getPostTitle().length() + 19;
@@ -476,15 +477,15 @@ void printPost(Post post) {
 }
 
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
+* A function that helps print all the post content 
 *
 * Input:
-* The new name
+* None
 *
 * Output:
-* None
+* Printed statement
 */
 void postDetails(Post post, int i) {
     cout << "Post " << i << endl;
@@ -525,15 +526,15 @@ void postDetails(Post post, int i) {
 }
 
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
+* This function is to make sure the description of the post keeps within a width
 *
 * Input:
-* The new name
+* None
 *
 * Output:
-* None
+* Printed statement
 */
 void wrapText(const string& text, int width) {
     istringstream iss(text);
@@ -554,15 +555,16 @@ void wrapText(const string& text, int width) {
     cout << line << endl;
 }
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
-*
+* This fucntion is the prompt for the user login, if successful, 
+* it will make loggedIn true; otherwise prints an error statement
+* 
 * Input:
-* The new name
+* Login credentials
 *
 * Output:
-* None
+* loggedIn = true if successful; prints error message if not successful
 */
 void userLogin(Dictionary<string> userData) {
     string username;
@@ -581,15 +583,16 @@ void userLogin(Dictionary<string> userData) {
     }
 }
 
-/**Rayzin Help input here
+/**
 * Description:
-* Sets a new name for the user
+* This fucntion is the prompt for the user sign up, if successful,
+* it will make loggedIn true, and save into the text file; 
 *
 * Input:
-* The new name
+* New user credentials
 *
 * Output:
-* None
+* loggedIn= true and svaed into text file
 */
 void userSignUp(Dictionary<string> userData) 
 {

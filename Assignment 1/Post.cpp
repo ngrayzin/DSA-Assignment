@@ -167,7 +167,7 @@ void Post::updateTextFile(Post* p)
         getline(ss, desc, ',');
         getline(ss, username, ',');
         getline(ss, topic, ',');
-        if (title == p->getPostTitle() && desc == p->getDescription() && username == p->getUser() && topic == p->getTopic()) {
+        if (title == p->getPostTitle() && username == p->getUser() && topic == p->getTopic()) {
             // If the line is the post that needs to be updated, replace it with the updated post
             line = p->toString();
         }
@@ -195,7 +195,7 @@ void Post::DeleteFromTextFile(Post* p)
         getline(ss, desc, ',');
         getline(ss, username, ',');
         getline(ss, topic, ',');
-        if (!(title == p->getPostTitle() && desc == p->getDescription() && username == p->getUser() && topic == p->getTopic())) {
+        if (!(title == p->getPostTitle() && username == p->getUser() && topic == p->getTopic())) {
             // If the line is NOT the post that needs to be deleted, add it to the vector of strings
             lines.push_back(line);
         }
